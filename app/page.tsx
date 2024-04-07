@@ -1,112 +1,228 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  TagIcon,
+  SearchIcon,
+  FolderIcon,
+  FolderSyncIcon,
+} from "@/components/icon";
+import NavbarSection from "@/components/container/homepage/navbar";
 
-export default function Home() {
+export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className={`bg-[#F5F5F5]`}>
+      <div className="flex flex-col">
+        <section className="bg-white">
+          <NavbarSection />
+          <section className="w-full pt-12 md:pt-24 lg:pt-32 border-t mb-36">
+            <div className="container space-y-10 px-4 md:px-6 xl:space-y-16">
+              <div className="grid max-w-7xl mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
+                <div className="flex flex-col justify-center space-y-4">
+                  <div className="space-y-2">
+                    <div className="inline-block rounded-lg bg-[#131313] px-3 py-1 text-sm dark:bg-gray-800 text-white">
+                      Introducing
+                    </div>
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                      Hooknhold
+                    </h2>
+                    <p className="max-w-[700px] text-gray-500 text-lg dark:text-gray-400">
+                      The modern visual bookmark manager for the web. Save,
+                      organize, and share your favorite links with ease.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                    <Link
+                      className="inline-flex h-10 items-center justify-center rounded-xl bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                      href="/mind"
+                    >
+                      Get Started
+                    </Link>
+                    <Link
+                      className="inline-flex h-10 items-center justify-center rounded-xl border bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
+                      href="#"
+                    >
+                      Contact Sales
+                    </Link>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center">
+                  <img
+                    alt="Image"
+                    className="aspect-video overflow-hidden rounded-xl object-cover object-center border"
+                    height="310"
+                    src="/placeholder.svg"
+                    width="550"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+        <main className="max-w-7xl mx-auto">
+          <section
+            className="w-full py-12 md:py-24 lg:py-32 bg-[#1F1F1F] rounded-3xl mt-36"
+            id="feature"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <div className="container px-4 md:px-6">
+              <div className="grid max-w-3xl mx-auto items-center gap-6 lg:grid-cols-[1fr_2fr] lg:gap-12">
+                <div className="space-y-4">
+                  <div className="inline-block rounded-lg bg-[#262626] ring-1 ring-[#D8D8D8] px-3 py-1 text-sm dark:bg-gray-800 text-[#D8D8D8]">
+                    Features
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl xl:text-5xl text-white">
+                    Your bookmarks. Your way.
+                  </h2>
+                  <p className="text-[#DEDEDE] dark:text-gray-400">
+                    Hooknhold is designed to be the perfect companion for your
+                    web journey.
+                  </p>
+                </div>
+                <div className="grid gap-4 border-t pt-4">
+                  <div className="grid gap-1">
+                    <span className="flex items-center gap-2">
+                      <FolderIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <h3 className="text-xl font-bold text-white">
+                        Organize Folders
+                      </h3>
+                    </span>
+                    <p className="text-[#DEDEDE] dark:text-gray-400">
+                      Organize bookmarks into folders that make sense to you.
+                    </p>
+                  </div>
+                  <div className="grid gap-1">
+                    <span className="flex items-center gap-2">
+                      <TagIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <h3 className="text-xl font-bold text-white">Tags</h3>
+                    </span>
+                    <p className="text-[#DEDEDE] dark:text-gray-400">
+                      Add tags to for easy categorization and quick access.
+                    </p>
+                  </div>
+                  <div className="grid gap-1">
+                    <span className="flex items-center gap-2">
+                      <SearchIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <h3 className="text-xl font-bold text-white">Search</h3>
+                    </span>
+                    <p className="text-[#DEDEDE] dark:text-gray-400">
+                      Easily find the page you&apos;re looking for.
+                    </p>
+                  </div>
+                  <div className="grid gap-1">
+                    <span className="flex items-center gap-2">
+                      <FolderSyncIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <h3 className="text-xl font-bold text-white">
+                        Cross-Device Sync
+                      </h3>
+                    </span>
+                    <p className="text-[#DEDEDE] dark:text-gray-400">
+                      Access your bookmarks anywhere, anytime.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+          <section className="mt-36">
+            <div>
+              <h2 className="text-5xl font-medium">
+                Designed for your web journey.
+              </h2>
+            </div>
+            <div className="flex gap-6 py-8">
+              <div className="gap-2 bg-white py-8 rounded-3xl px-8 shadow-md pr-64">
+                <h3 className="font-medium">Easy to use.</h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Designed to be intuitive and easy to use. Save your favorite
+                  links in seconds.
+                </p>
+              </div>
+              <div className="gap-2 bg-white py-8 rounded-3xl px-8">
+                <h3 className="font-medium">Never lose a link again.</h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Of course, you can always rely on this to keep your bookmarks
+                  safe and secure.
+                </p>
+              </div>
+            </div>
+          </section>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <section className="w-full py-12 md:py-24 lg:py-32 border-t">
+            <div className="container px-4 md:px-6">
+              <div className="grid max-w-5xl mx-auto items-center gap-6 lg:grid-cols-[2fr_1fr] lg:gap-12">
+                <div className="space-y-4 align-top">
+                  <div className="inline-block rounded-lg bg-[#131313] px-3 py-1 text-sm dark:bg-gray-800 text-white">
+                    Testimonials
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl xl:text-5xl">
+                    Loved by users
+                  </h2>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    But don&apos;t just take our word for it. Here&apos;s what
+                    our users have to say about Hooknhold.
+                  </p>
+                </div>
+                <div className="grid gap-6">
+                  <div className="grid gap-2 bg-white py-8 rounded-3xl px-8">
+                    <div className=" py-1 text-sm dark:bg-gray-800">
+                      @username
+                    </div>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Hooknhold has completely changed the way I save and
+                      organize my links. It&apos;s so intuitive and easy to use.
+                      Highly recommended!
+                    </p>
+                  </div>
+                  <div className="grid gap-2 bg-white py-8 rounded-3xl px-8">
+                    <div className="py-1 text-sm dark:bg-gray-800">
+                      @webfanatic
+                    </div>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      I&apos;ve tried a lot of bookmark managers, but Hooknhold
+                      is the best. I love the clean interface and the ability to
+                      access my bookmarks from any device.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        <section className="w-full py-12 md:py-24 lg:py-32 border-t bg-[#1E1E1E] text-white">
+          <div className="container grid gap-4 px-4 md:px-6 bg-[#262626] max-w-7xl mx-auto rounded-3xl py-8">
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight ">
+                Have a Brilliant Idea for a Feature?
+              </h2>
+              <p className="max-w-[600px] text-[#DEDEDE] text-lg dark:text-gray-400">
+                Your input fuels our innovation. Share your feature request or
+                suggestion with us, and let&apos;s shape the future together.
+              </p>
+            </div>
+          </div>
+        </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        <footer className="gap-2 py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-white">
+          <span className="max-w-7xl mx-auto flex flex-row">
+            <p className="text-xs text-gray-500 dark:text-gray-400 ">
+              © 2024 Hooknhold. All rights reserved.
+            </p>
+            <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+              <Link
+                className="text-xs hover:underline underline-offset-4"
+                href="#"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                className="text-xs hover:underline underline-offset-4"
+                href="#"
+              >
+                Privacy
+              </Link>
+            </nav>
+          </span>
+        </footer>
       </div>
     </main>
   );
