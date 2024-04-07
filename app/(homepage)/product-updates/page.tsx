@@ -22,7 +22,7 @@ export default function ProductUpdates() {
           </div>
           <div className="space-y-4">
             <div className="inline-block rounded-lg bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800 text-black font-medium">
-              Q1 2024
+              Q2 2024
             </div>
 
             <div className="flex items-start gap-4">
@@ -31,11 +31,9 @@ export default function ProductUpdates() {
               </div>
               <div className="space-y-1.5">
                 <h3 className="text-lg font-semibold tracking-tighter">
-                  Build MVP
+                  Start
                 </h3>
-                <p className="text-sm text-gray-500">
-                  Hard at work building our Minimum Viable Product.
-                </p>
+                <p className="text-sm text-gray-500">Starting the project.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -61,6 +59,26 @@ export default function ProductUpdates() {
                 </h3>
                 <p className="text-sm text-gray-500">
                   Users will be able to share folder with others.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="inline-block rounded-lg bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800 text-black font-medium">
+              Q3 2024
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="flex items-center justify-center rounded-full border border-gray-200 bg-gray-50 w-10 h-10 dark:border-gray-800 dark:bg-gray-950">
+                <FilePlusIcon className="h-6 w-6" />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-semibold tracking-tighter">
+                  New Feature: Exstension
+                </h3>
+                <p className="text-sm text-gray-500">
+                  To make it easier to save bookmarks, we are working on a
+                  browser extension.
                 </p>
               </div>
             </div>
