@@ -58,8 +58,8 @@ export default function About() {
               </div>
 
               <p className="text-sm text-gray-500 mt-4">
-                You might notice the use of "we/us" throughout the site. While
-                this is a personal project, I use "we" to give it a professional
+                You might notice the use of &ldquo;we/us&ldquo; throughout the site. While
+                this is a personal project, I use &ldquo;we&ldquo; to give it a professional
                 feel hahaha. Thanks for understanding!
               </p>
             </div>
