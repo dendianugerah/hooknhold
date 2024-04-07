@@ -10,5 +10,3 @@ export const authConfig: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
 };
-
-console.log("Debug lib/auth.ts, secret:", process.env.NEXTAUTH_SECRET);

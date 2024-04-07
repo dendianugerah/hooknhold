@@ -24,7 +24,7 @@ export default async function Home() {
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                       Hooknhold
                     </h2>
-                    <p className="max-w-[700px] text-gray-500 text-lg dark:text-gray-400">
+                    <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                       The modern visual bookmark manager for the web. Save,
                       organize, and share your favorite links with ease.
                     </p>
@@ -194,7 +194,7 @@ export default async function Home() {
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight ">
                 Have a Brilliant Idea for a Feature?
               </h2>
-              <p className="max-w-[600px] text-[#DEDEDE] text-lg dark:text-gray-400">
+              <p className="max-w-[600px] text-[#DEDEDE] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                 Your input fuels our innovation. Share your feature request or
                 suggestion with us, and let&apos;s shape the future together.
               </p>

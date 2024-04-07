@@ -14,7 +14,7 @@ export default function ProductUpdates() {
             <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
               Upcoming Features & Improvements
             </h1>
-            <p className="max-w-[600px] text-gray-500 text-lg dark:text-gray-400">
+            <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
               Here&apos;s a sneak peek at what we&apos;re working on. Your
               feedback helps us prioritize features. Let us know what
               you&apos;re excited about!

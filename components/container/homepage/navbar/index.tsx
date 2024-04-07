@@ -15,15 +15,15 @@ export default function NavbarSection() {
         >
           Features
         </Link>
-        <Link
+        {/* <Link
           className="text-sm font-medium rounded-lg hover:bg-gray-100 px-3 py-2"
           href="#"
         >
           Pricing
-        </Link>
+        </Link> */}
         <Link
           className="text-sm font-medium rounded-lg hover:bg-gray-100 px-3 py-2"
-          href="#"
+          href="about"
         >
           About
         </Link>
