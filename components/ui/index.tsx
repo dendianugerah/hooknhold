@@ -4,9 +4,11 @@ import {
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuRadioGroup,
 } from "./dropdown-menu";
 import {
   Card,
@@ -29,7 +31,9 @@ export {
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuRadioGroup,
 };

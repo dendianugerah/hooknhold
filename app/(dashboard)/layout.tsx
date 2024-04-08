@@ -10,15 +10,15 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  // const { data: session, status } = useSession();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (status === "loading") return;
-    if (!session) {
-      router.push("/");
-    }
-  }, [session, status, router]);
+  // useEffect(() => {
+  //   if (status === "loading") return;
+  //   if (!session) {
+  //     router.push("/");
+  //   }
+  // }, [session, status, router]);
 
   return (
     <NextAuthProvider>

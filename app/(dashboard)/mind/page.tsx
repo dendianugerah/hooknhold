@@ -2,7 +2,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import { ChevronDownIcon } from "@/components/icon";
+import {
+  PlusIcon,
+  ShareIcon,
+  BookmarkIcon,
+  ChevronDownIcon,
+  ArrowUpDownIcon,
+  SlidersHorizontalIcon,
+} from "@/components/icon";
 import {
   Button,
   Card,
@@ -13,13 +20,19 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui";
 
 export default function Mind() {
   return (
     <div className="flex w-full min-h-screen">
       <div className="flex flex-col w-full">
-        <header className="flex h-14 items-center justify-end gap-4 border-b px-6 dark:bg-gray-800/40">
+        <header className="flex h-14 items-center justify-between lg:ml-[320px] xl:ml-[350px] gap-4 border-b px-6 dark:bg-gray-800/40">
+          <span className="flex items-center font-semibold gap-x-2 text-lg">
+            <BookmarkIcon className="h-6 w-6" />
+            Bookmarks
+          </span>
           <Button className="rounded-lg md:hidden">
             <ChevronDownIcon className="w-4 h-4" />
             <span className="sr-only">Toggle sidebar</span>
@@ -65,12 +78,54 @@ export default function Mind() {
           </DropdownMenu>
         </header>
 
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 lg:ml-[320px] xl:ml-[350px]">
-          <div className="flex items-center">
-            <h1 className="font-semibold text-lg md:text-2xl">Bookmarks</h1>
-            <Button className="ml-auto" size="sm">
-              Add new bookmark
-            </Button>
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 md:pt-2 lg:ml-[320px] xl:ml-[350px]">
+          <div className="flex items-center border-b py-2 justify-between">
+            <div className="flex gap-x-2">
+              <Button className="ml-auto shrink-0 rounded-xl" variant="outline">
+                <SlidersHorizontalIcon className="mr-1 h-4 w-4 -translate-x-1" />
+                Filter
+                <span className="font-semibold text-xs ml-2 bg-[#0f6be9] text-white rounded-md px-[6px] py-0.5">
+                  2
+                </span>
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    className="ml-auto shrink-0 rounded-xl"
+                    variant="outline"
+                  >
+                    <ArrowUpDownIcon className="w-4 h-4 mr-2" />
+                    Sort
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[200px]">
+                  <DropdownMenuRadioGroup value="tag">
+                    <DropdownMenuRadioItem value="tag">
+                      Tag (A-Z)
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="tag-desc">
+                      Tag (Z-A)
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="newest">
+                      Newest
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="oldest">
+                      Oldest
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="flex gap-x-2">
+              <Button className="ml-auto shrink-0 rounded-xl" variant="outline">
+                <ShareIcon className="w-4 h-4 mr-2" />
+                Share
+              </Button>
+              <Button className="ml-auto shrink-0 rounded-xl" variant="outline">
+                <PlusIcon className="w-4 h-4 mr-2" />
+                Add new bookmark
+              </Button>
+            </div>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
@@ -222,27 +277,5 @@ export default function Mind() {
         </main>
       </div>
     </div>
-  );
-}
-
-function HashIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="4" x2="20" y1="9" y2="9" />
-      <line x1="4" x2="20" y1="15" y2="15" />
-      <line x1="10" x2="8" y1="3" y2="21" />
-      <line x1="16" x2="14" y1="3" y2="21" />
-    </svg>
   );
 }
