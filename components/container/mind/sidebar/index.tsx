@@ -1,16 +1,15 @@
 import { Input } from "@/components/ui";
 import {
-  BookmarkIcon,
-  FolderIcon,
-  Package2Icon,
   PlusIcon,
   SearchIcon,
+  FolderIcon,
+  BookmarkIcon,
+  Package2Icon,
+  MoreVerticalIcon,
 } from "@/components/icon";
-
 import Link from "next/link";
 
 export default function SidebarSection() {
-
   return (
     <div className="hidden fixed h-full w-[320px] xl:w-[350px] border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
       <div className="flex h-full flex-col gap-2">
@@ -45,11 +44,16 @@ export default function SidebarSection() {
               Folder
             </p>
             <Link
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+              className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
               href="#"
             >
-              <FolderIcon className="h-4 w-4" />
-              Personal
+              <div className="flex items-center gap-3">
+                <FolderIcon className="h-4 w-4" />
+                Personal
+              </div>
+              <span className="translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+                <MoreVerticalIcon className="h-4 w-4 text-black font-bold" />
+              </span>
             </Link>
             <Link
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
