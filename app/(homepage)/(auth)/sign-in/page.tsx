@@ -5,14 +5,17 @@ import { Button, Input } from "@/components/ui";
 import { Package2Icon } from "@/components/icon";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import { useEffect } from "react";
 export default function SignIn() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  if (session) {
-    router.push("/mind");
-  }
+  useEffect(() => {
+    if (session) {
+      router.push("/mind");
+    }
+  }, [session, router]);
+
   return (
     <div className="bg-[#1E1E1E] min-h-screen text-white py-8">
       <div className="max-w-7xl mx-auto">
