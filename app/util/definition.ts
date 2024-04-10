@@ -1,10 +1,7 @@
 export interface User {
-  id: string;
   username: string;
   email: string;
   profile_image: string;
-  password: string;
-  created_at: string;
 }
 
 export interface Bookmark {
