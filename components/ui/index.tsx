@@ -18,6 +18,18 @@ import {
   CardDescription,
   CardFooter,
 } from "./card";
+import {
+  Dialog,
+  DialogTitle,
+  DialogClose,
+  DialogPortal,
+  DialogFooter,
+  DialogHeader,
+  DialogContent,
+  DialogOverlay,
+  DialogTrigger,
+  DialogDescription,
+} from "./dialog";
 
 export {
   Button,
