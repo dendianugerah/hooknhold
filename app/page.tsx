@@ -185,7 +185,7 @@ export default async function Home() {
         <section className="w-full py-12 md:py-24 lg:py-32 border-t bg-[#1E1E1E] text-white">
           <div className="container grid gap-4 px-4 md:px-6 bg-[#262626] max-w-7xl mx-auto rounded-3xl py-8">
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight ">
+              <h2 className="text-3xl font-bold md:text-4xl">
                 Have a Brilliant Idea for a Feature?
               </h2>
               <p className="max-w-[600px] text-[#DEDEDE] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">

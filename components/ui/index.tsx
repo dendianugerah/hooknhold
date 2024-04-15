@@ -30,6 +30,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "./dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 export {
   Button,
@@ -58,4 +59,7 @@ export {
   DialogOverlay,
   DialogTrigger,
   DialogDescription,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 };

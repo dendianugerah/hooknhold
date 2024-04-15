@@ -1,4 +1,4 @@
-import { checkIfuserExist, createNewUser } from "@/app/util/action";
+import { checkIfuserExist, createNewUser } from "@/app/utils/action";
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 

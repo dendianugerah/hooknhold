@@ -7,14 +7,11 @@ export interface User {
 export interface Bookmark {
   id: string;
   user_id: string;
-  folder_id: string;
+  folder_id: string | null;
   title: string;
   url: string;
   description: string;
   image: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
 }
 
 export interface Folder {
@@ -39,4 +36,20 @@ export interface Tag {
 export interface BookmarkTag {
   bookmark_id: string;
   tag_id: string;
+}
+
+export interface BookmarkData {
+  id: string;
+  user_id: string;
+  folder_id: string | null;
+  data: {
+    title: string;
+    url: string;
+    description: string | null;
+    image: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+  };
+  tags: Omit<Tag, "id" | "user_id">[];
 }
