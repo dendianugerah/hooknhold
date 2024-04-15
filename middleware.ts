@@ -8,6 +8,12 @@ export default withAuth(
       if (req.nextauth.token) {
         return NextResponse.redirect(new URL("/mind", req.url));
       }
+
+      return null;
+    }
+
+    if (!req.nextauth.token) {
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     }
   },
   {
