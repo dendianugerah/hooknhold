@@ -5,22 +5,10 @@ export interface User {
 }
 
 export interface Bookmark {
-  id: string;
-  user_id: string;
-  folder_id: string | null;
   title: string;
   url: string;
-  description: string;
+  description: string | null;
   image: string;
-}
-
-export interface Folder {
-  id: string;
-  user_id: string;
-  name: string;
-  is_public: string;
-  readonly: string;
-  shared_with: string[];
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -42,14 +30,11 @@ export interface BookmarkData {
   id: string;
   user_id: string;
   folder_id: string | null;
-  data: {
-    title: string;
-    url: string;
-    description: string | null;
-    image: string;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-  };
+  data: Bookmark;
   tags: Omit<Tag, "id" | "user_id">[];
+}
+
+export interface FolderData {
+  id: string;
+  name: string;
 }

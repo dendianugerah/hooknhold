@@ -1,22 +1,31 @@
 import { NextResponse } from "next/server";
 
-interface ApiResponse {
-  meta: {
-    status: number;
-    message: string;
-  };
-  data: any;
+interface ApiResponse<T> {
+  meta: ApiResponseMeta;
+  data: T;
 }
 
-export function Response(
-  data: any,
+interface ApiResponseMeta {
+  status: number;
+  message: string;
+}
+
+export function Response<T>(
+  data: T,
   status: number,
-  message: string
+  message?: string
 ): NextResponse {
-  const response: ApiResponse = {
+  const defaultMessage: Record<number, string> = {
+    200: "Success",
+    400: "Bad Request",
+    404: "Not Found",
+    500: "Internal Server Error",
+  };
+
+  const response: ApiResponse<T> = {
     meta: {
       status: status,
-      message: message,
+      message: message || defaultMessage[status],
     },
     data: data,
   };
