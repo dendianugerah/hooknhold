@@ -50,7 +50,7 @@ export default function SidebarSection() {
 
             <Link
               className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-              href="#"
+              href="/mind"
             >
               <BookmarkIcon className="h-4 w-4" />
               Bookmarks
@@ -66,7 +66,7 @@ export default function SidebarSection() {
                 <Link
                   key={folder.id}
                   className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 "
-                  href="#"
+                  href={`/mind/${folder.id}`}
                 >
                   <div className="flex items-center gap-3">
                     <FolderIcon className="h-4 w-4" />
