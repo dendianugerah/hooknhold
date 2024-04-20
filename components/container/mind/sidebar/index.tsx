@@ -8,22 +8,24 @@ import {
   MoreVerticalIcon,
 } from "@/components/icon";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { X } from "lucide-react";
 import useFolders from "@/hooks/useFolder";
 import useUserId from "@/hooks/useUserId";
 import useCreateFolder from "@/hooks/createFolder";
+import { SearchContext } from "@/app/(dashboard)/layout";
 
 export default function SidebarSection() {
   const [showCreateFolder, setShowCreateFolder] = useState(false);
   const [folderName, setFolderName] = useState("");
-
   const userId = useUserId();
   const createFolder = useCreateFolder(userId, () =>
     setShowCreateFolder(false)
   );
 
+  const { setSearch } = useContext(SearchContext);
   const { folders, isLoading } = useFolders(userId);
+
   return (
     <div className="hidden fixed h-full w-[320px] xl:w-[350px] border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
       <div className="flex h-full flex-col gap-2">
@@ -43,13 +45,14 @@ export default function SidebarSection() {
                     className="w-full bg-white shadow-none appearance-none pl-8 dark:bg-gray-950"
                     placeholder="What are you looking for?"
                     type="search"
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </form>
             </div>
 
             <Link
-              className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+              className="flex items-center gap-3 rounded-lg focus:bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
               href="/mind"
             >
               <BookmarkIcon className="h-4 w-4" />
@@ -65,7 +68,7 @@ export default function SidebarSection() {
               {folders.map((folder) => (
                 <Link
                   key={folder.id}
-                  className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 "
+                  className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 focus:bg-gray-100"
                   href={`/mind/${folder.id}`}
                 >
                   <div className="flex items-center gap-3">
