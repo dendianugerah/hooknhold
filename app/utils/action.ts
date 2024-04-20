@@ -46,13 +46,22 @@ export async function createNewUser(newUser: User): Promise<void> {
   }
 }
 
-export async function getBookmark(userId: string, folderId?: string): Promise<BookmarkData[]> {
+export async function getBookmark(
+  userId: string,
+  folderId?: string,
+  query?: string
+): Promise<BookmarkData[]> {
   try {
     let url = `${API_BASE_URL}/${userId}/bookmark`;
 
     if (folderId) {
       url += `?folderId=${folderId}`;
     }
+
+    if (query) {
+      url += `?query=${query}`;
+    }
+
     const response = await fetch(url, {
       method: "GET",
     });
