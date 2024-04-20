@@ -29,5 +29,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/sign-in", "/mind"],
+  matcher: ["/sign-in", "/mind/:path*"],
 };

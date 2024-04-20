@@ -8,6 +8,7 @@ import { Response } from "@/app/utils/response";
 import { BookmarkData } from "@/app/utils/definition";
 import { NextRequest, NextResponse } from "next/server";
 import db, { bookmark, bookmark_tag, tag } from "@/lib/database";
+import { PgSelect } from "drizzle-orm/pg-core";
 
 let browserInstance: Browser | null = null;
 
@@ -134,29 +135,38 @@ export async function POST(
   }
 }
 
+function withFolderId<T extends PgSelect>(qb: T, folderId: string) {
+  return qb.where(sql`folder_id = ${folderId}`);
+}
+
+function withQuery<T extends PgSelect>(qb: T, search: string) {
+  return qb.where(sql`title ILIKE ${search} OR description ILIKE ${search}`);
+}
+
 export async function GET(
   req: NextRequest,
-  query: { params: { userId: string } }
+  queryParams: { params: { userId: string } }
 ) {
-  const userId = query.params.userId;
+  const userId = queryParams.params.userId;
   const folderId = req.nextUrl.searchParams.get("folderId");
+  const searchQuery = req.nextUrl.searchParams.get("query");
 
   let bookmarks;
 
+  bookmarks = db
+    .select()
+    .from(bookmark)
+    .leftJoin(bookmark_tag, eq(bookmark.id, bookmark_tag.bookmark_id))
+    .leftJoin(tag, eq(tag.id, bookmark_tag.tag_id))
+    .where(sql`bookmark.user_id = ${userId}`)
+    .$dynamic();
+
   if (folderId) {
-    bookmarks = db
-      .select()
-      .from(bookmark)
-      .leftJoin(bookmark_tag, eq(bookmark.id, bookmark_tag.bookmark_id))
-      .leftJoin(tag, eq(tag.id, bookmark_tag.tag_id))
-      .where(sql`bookmark.user_id = ${userId} AND folder_id = ${folderId}`);
-  } else {
-    bookmarks = db
-      .select()
-      .from(bookmark)
-      .leftJoin(bookmark_tag, eq(bookmark.id, bookmark_tag.bookmark_id))
-      .leftJoin(tag, eq(tag.id, bookmark_tag.tag_id))
-      .where(sql`bookmark.user_id = ${userId}`);
+    bookmarks = withFolderId(bookmarks, folderId);
+  }
+
+  if (searchQuery) {
+    bookmarks = withQuery(bookmarks, `%${searchQuery}%`);
   }
 
   const bookmarksMap: Map<string, BookmarkData> = new Map();
