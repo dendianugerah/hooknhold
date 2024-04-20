@@ -140,7 +140,7 @@ export default function Mind({ folderId }: MindProps) {
                 <BookmarkSkeleton />
               </div>
             ) : (
-              bookmarks?.map((bookmark) => <CardSection bookmark={bookmark} />)
+              bookmarks?.map((bookmark) => <CardSection bookmark={bookmark} key={bookmark.id} />)
             )}
           </div>
         </main>
