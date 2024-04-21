@@ -31,6 +31,12 @@ import {
   DialogDescription,
 } from "./dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionContent,
+  AccordionTrigger,
+} from "./accordion";
 
 export {
   Button,
@@ -62,4 +68,8 @@ export {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Accordion,
+  AccordionItem,
+  AccordionContent,
+  AccordionTrigger,
 };

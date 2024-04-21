@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import { NextRequest } from "next/server";
 import db, { folder } from "@/lib/database";
 import { Response } from "@/app/utils/response";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export async function POST(
   req: NextRequest,
@@ -50,6 +50,30 @@ export async function GET(
       .where(eq(folder.user_id, userId));
 
     return Response(folders, 200, "Folders fetched successfully");
+  } catch (error) {
+    console.error(error);
+    return Response(null, 500, "An error occurred");
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  query: { params: { userId: string; folderId: string } }
+) {
+  try {
+    const body = await req.json();
+    const name = body.name;
+    const userId = query.params.userId;
+    const folderId = query.params.folderId;
+
+    await db
+      .update(folder)
+      .set({
+        name: name,
+      })
+      .where(and(eq(folder.id, folderId), eq(folder.user_id, userId)));
+
+    return Response(null, 200, "Folder updated successfully");
   } catch (error) {
     console.error(error);
     return Response(null, 500, "An error occurred");

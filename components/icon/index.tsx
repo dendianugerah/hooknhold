@@ -26,7 +26,9 @@ function BookmarkIcon(props: any) {
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill="#4b8bff"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
