@@ -17,6 +17,7 @@ import HeaderSection from "@/components/container/mind/header";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
 import useCreateBookmark from "@/hooks/createBookmark";
+import { usePathname } from "next/navigation";
 
 interface MindProps {
   folderId?: string;
@@ -34,6 +35,8 @@ export default function Mind({ folderId }: MindProps) {
     search
   );
   const createBookmark = useCreateBookmark(userId, () => setIsOpen(false));
+  const pathname = usePathname();
+  const isMindRoute = pathname === "/mind";
 
   return (
     <div className="flex w-full min-h-screen">
@@ -46,10 +49,15 @@ export default function Mind({ folderId }: MindProps) {
               <ControlSection />
             </div>
             <div className="flex gap-x-2">
-              <Button className="ml-auto shrink-0 rounded-md" variant="outline">
-                <ShareIcon className="w-4 h-4 mr-2" />
-                Share
-              </Button>
+              {!isMindRoute && (
+                <Button
+                  className="ml-auto shrink-0 rounded-md"
+                  variant="outline"
+                >
+                  <ShareIcon className="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+              )}
               {/* add new bookmark */}
 
               <Dialog open={isOpen} onOpenChange={setIsOpen}>
