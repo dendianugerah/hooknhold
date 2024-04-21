@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   TagIcon,
   SearchIcon,
@@ -7,7 +8,7 @@ import {
 } from "@/components/icon";
 import NavbarSection from "@/components/container/homepage/navbar";
 
-export default async function Home() {
+export default function Home() {
   return (
     <main className={`bg-[#F5F5F5]`}>
       <div className="flex flex-col">
@@ -38,14 +39,19 @@ export default async function Home() {
                     </Link>
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
-                  <img
-                    alt="Image"
-                    className="aspect-video overflow-hidden rounded-xl object-cover object-center border"
-                    height="310"
-                    src="/placeholder.svg"
-                    width="550"
-                  />
+                <div className="relative group">
+                  <div className="relative overflow-hidden rounded-lg shadow-md">
+                    <Image
+                      alt="Image"
+                      className="object-cover object-center"
+                      height={310}
+                      src="/image/hero.png"
+                      width={550}
+                      quality={100}
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -123,7 +129,7 @@ export default async function Home() {
               </h2>
             </div>
             <div className="flex gap-6 py-8">
-              <div className="gap-2 bg-white py-8 rounded-3xl px-8 shadow-md pr-64">
+              <div className="gap-2 bg-white py-8 rounded-3xl px-8 pr-64">
                 <h3 className="font-medium">Easy to use.</h3>
                 <p className="text-gray-500 dark:text-gray-400">
                   Designed to be intuitive and easy to use. Save your favorite
