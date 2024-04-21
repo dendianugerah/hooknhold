@@ -12,7 +12,7 @@ import {
 export default function ControlSection() {
   return (
     <div className="flex gap-x-2">
-      <Button className="ml-auto shrink-0 rounded-xl" variant="outline">
+      <Button className="ml-auto shrink-0 rounded-md" variant="outline">
         <SlidersHorizontalIcon className="mr-1 h-4 w-4 -translate-x-1" />
         Filter
         <span className="font-semibold text-xs ml-2 bg-[#0f6be9] text-white rounded-md px-[6px] py-0.5">
@@ -21,7 +21,7 @@ export default function ControlSection() {
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="ml-auto shrink-0 rounded-xl" variant="outline">
+          <Button className="ml-auto shrink-0 rounded-md" variant="outline">
             <ArrowUpDownIcon className="w-4 h-4 mr-2" />
             Sort
           </Button>

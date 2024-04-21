@@ -40,13 +40,13 @@ export default function Mind({ folderId }: MindProps) {
       <div className="flex flex-col w-full">
         <HeaderSection />
 
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 md:pt-2 lg:ml-[320px] xl:ml-[350px]">
-          <div className="flex flex-col md:flex-row items-start md:items-center border-b py-2 md:justify-between">
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-4 md:p-6 md:pt-2 lg:ml-[320px] xl:ml-[350px]">
+          <div className="flex flex-col md:flex-row items-start md:items-center py-2 md:justify-between">
             <div>
               <ControlSection />
             </div>
             <div className="flex gap-x-2">
-              <Button className="ml-auto shrink-0 rounded-xl" variant="outline">
+              <Button className="ml-auto shrink-0 rounded-md" variant="outline">
                 <ShareIcon className="w-4 h-4 mr-2" />
                 Share
               </Button>
@@ -56,7 +56,7 @@ export default function Mind({ folderId }: MindProps) {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="ml-auto shrink-0 rounded-xl"
+                    className="ml-auto shrink-0 rounded-md"
                     onClick={() => setIsOpen(true)}
                   >
                     <PlusIcon className="w-4 h-4 mr-2" />
@@ -140,7 +140,9 @@ export default function Mind({ folderId }: MindProps) {
                 <BookmarkSkeleton />
               </div>
             ) : (
-              bookmarks?.map((bookmark) => <CardSection bookmark={bookmark} key={bookmark.id} />)
+              bookmarks?.map((bookmark) => (
+                <CardSection bookmark={bookmark} key={bookmark.id} />
+              ))
             )}
           </div>
         </main>
