@@ -5,6 +5,11 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui";
 import {
   PlusIcon,
@@ -89,7 +94,37 @@ export default function SidebarSection() {
                           {folder.name}
                         </div>
                         <span className="translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
-                          <MoreVerticalIcon className="h-4 w-4 text-black font-bold" />
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="flex items-center justify-center">
+                                <MoreVerticalIcon className="h-4 w-4 text-black font-bold" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              align="end"
+                              alignOffset={-300}
+                              className="w-[200px] overflow-auto"
+                            >
+                              <DropdownMenuRadioGroup>
+                                <DropdownMenuRadioItem
+                                  value="rename"
+                                  className="pl-2"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                  }}
+                                >
+                                  Rename
+                                </DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem
+                                  value="delete"
+                                  className="pl-2 border-t"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  Delete
+                                </DropdownMenuRadioItem>
+                              </DropdownMenuRadioGroup>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </span>
                       </Link>
                     ))}
@@ -165,7 +200,10 @@ export default function SidebarSection() {
               onClick={() => {
                 setShowCreateFolder(true);
                 const accordion = document.getElementById("folderAccordion");
-                if (accordion) {
+                if (
+                  accordion &&
+                  accordion.getAttribute("aria-expanded") === "false"
+                ) {
                   accordion.click();
                 }
               }}
