@@ -143,10 +143,10 @@ export default function Mind({ folderId }: MindProps) {
             </Card> */}
 
             {isLoadBookmarks ? (
-              <div className="flex flex-row">
+              <>
                 <BookmarkSkeleton />
                 <BookmarkSkeleton />
-              </div>
+              </>
             ) : (
               bookmarks?.map((bookmark) => (
                 <CardSection bookmark={bookmark} key={bookmark.id} />
