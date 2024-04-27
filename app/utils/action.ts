@@ -124,3 +124,20 @@ export async function getFolder(userId: string) {
     throw error;
   }
 }
+
+export async function deleteFolder(userId: string, id: string) {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/${userId}/folder?id=${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const item = await response.json();
+
+    return item.data;
+  } catch (error) {
+    throw error;
+  }
+}

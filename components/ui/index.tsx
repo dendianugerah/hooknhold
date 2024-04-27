@@ -37,6 +37,27 @@ import {
   AccordionContent,
   AccordionTrigger,
 } from "./accordion";
+import {
+  Select,
+  SelectItem,
+  SelectValue,
+  SelectContent,
+  SelectTrigger,
+} from "./select";
+import MultipleSelector from "./multiple-selector";
+import {
+  AlertDialog,
+  AlertDialogTitle,
+  AlertDialogCancel,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogPortal,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogDescription,
+} from "./alert-dialog";
 
 export {
   Button,
@@ -72,4 +93,21 @@ export {
   AccordionItem,
   AccordionContent,
   AccordionTrigger,
+  Select,
+  SelectItem,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  MultipleSelector,
+  AlertDialog,
+  AlertDialogTitle,
+  AlertDialogCancel,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogPortal,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogDescription,
 };
