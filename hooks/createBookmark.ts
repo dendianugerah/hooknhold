@@ -8,7 +8,8 @@ export const useCreateBookmark = (
   const queryClient = useQueryClient();
 
   const createBookmark = useMutation({
-    mutationFn: (url: string) => addBookmark(userId, url),
+    mutationFn: (data: { url: string; tags?: string[]; folderId?: string }) =>
+      addBookmark(userId, data.url, data.tags, data.folderId),
     onError: (error) => {
       console.error("Error creating bookmark:", error);
     },

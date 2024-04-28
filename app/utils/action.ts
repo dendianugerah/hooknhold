@@ -74,14 +74,25 @@ export async function getBookmark(
   }
 }
 
-export async function addBookmark(userId: string, url: string): Promise<void> {
+export async function addBookmark(
+  userId: string,
+  url: string,
+  tags?: string[],
+  folderId?: string
+): Promise<void> {
   try {
+    const body = {
+      url: url,
+      tags: tags,
+      folder_id: folderId,
+    };
+
     const response = await fetch(`${API_BASE_URL}/${userId}/bookmark`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify(body),
     });
 
     return response.json();
@@ -127,17 +138,28 @@ export async function getFolder(userId: string) {
 
 export async function deleteFolder(userId: string, id: string) {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/${userId}/folder?id=${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/${userId}/folder?id=${id}`, {
+      method: "DELETE",
+    });
 
     const item = await response.json();
 
     return item.data;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function getTag(userId: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/tag`, {
+      method: "GET",
+    });
+
+    const item = await response.json();
+    
+    return item.data;
+  } catch (error) {
+    throw  error;
   }
 }

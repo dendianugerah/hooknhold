@@ -11,6 +11,7 @@ import {
   SearchIcon,
   BookmarkIcon,
   Package2Icon,
+  FolderIcon,
 } from "@/components/icon";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useContext, useState } from "react";
@@ -53,7 +54,7 @@ export default function SidebarSection() {
   };
 
   return (
-    <div className="hidden fixed h-full w-[320px] xl:w-[350px] border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
+    <div className="hidden fixed h-full w-[320px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40">
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-14 items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="#">
@@ -77,10 +78,13 @@ export default function SidebarSection() {
               <AccordionItem value="folder">
                 {folders.length > 0 && (
                   <AccordionTrigger
-                    className="flex items-center gap-3 px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+                    className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
                     id="folderAccordion"
                   >
-                    Folder
+                    <span className="flex gap-3 items-center">
+                      <FolderIcon className="h-4 w-4 transition-none" />
+                      Folder
+                    </span>
                   </AccordionTrigger>
                 )}
                 <AccordionContent>

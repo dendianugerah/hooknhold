@@ -1,24 +1,34 @@
 "use client";
+import { SearchContext } from "../layout";
 import { useContext, useState } from "react";
+import { usePathname } from "next/navigation";
+import { Option } from "@/components/ui/multiple-selector";
 import { PlusIcon, ShareIcon, LoadingCircleIcon } from "@/components/icon";
 import {
   Button,
+  Input,
   Dialog,
-  DialogFooter,
   DialogContent,
   DialogTrigger,
-  Input,
+  DialogFooter,
+  Card,
+  CardContent,
+  Select,
+  SelectItem,
+  SelectValue,
+  SelectContent,
+  SelectTrigger,
+  MultipleSelector,
 } from "@/components/ui";
-import { SearchContext } from "../layout";
+import useTags from "@/hooks/useTags";
 import useUserId from "@/hooks/useUserId";
+import useFolders from "@/hooks/useFolder";
 import useBookmarks from "@/hooks/useBookmarks";
 import CardSection from "@/components/container/mind/card";
 import HeaderSection from "@/components/container/mind/header";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
 import useCreateBookmark from "@/hooks/createBookmark";
-import { usePathname } from "next/navigation";
-
 interface MindProps {
   folderId?: string;
 }
@@ -27,14 +37,26 @@ export default function Mind({ folderId }: MindProps) {
   const userId = useUserId();
   const [url, setUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<Option[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState("");
+  const [selectedFolderName, setSelectedFolderName] = useState("Select");
 
+  const { options } = useTags(userId);
+  const { folders } = useFolders(userId);
   const { search } = useContext(SearchContext);
   const { bookmarks, isLoading: isLoadBookmarks } = useBookmarks(
     userId,
     folderId,
     search
   );
+
   const createBookmark = useCreateBookmark(userId, () => setIsOpen(false));
+  const createBookmarkData = {
+    url: url,
+    tags: selectedTags.map((tag) => tag.value),
+    folderId: selectedFolderId,
+  };
+
   const pathname = usePathname();
   const isMindRoute = pathname === "/mind";
 
@@ -71,19 +93,72 @@ export default function Mind({ folderId }: MindProps) {
                     New bookmark
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <div className="flex flex-col py-4">
-                    <div className="mb-4">
-                      <label htmlFor="url" className="text-left px-2 py-2">
-                        Enter URL
-                      </label>
-                      <Input
-                        id="url"
-                        placeholder="https://"
-                        onChange={(e) => setUrl(e.target.value)}
-                      />
-                    </div>
-                  </div>
+                <DialogContent>
+                  <Card className="border-none shadow-none">
+                    <CardContent className="p-0 space-y-3 mt-4">
+                      <div className="flex flex-col space-y-2">
+                        <h1 className="font-semibold text-sm">
+                          URL {""}
+                          <span className="text-xs">(required)</span>
+                        </h1>
+                        <Input
+                          id="url"
+                          className="rounded-md"
+                          placeholder="https://"
+                          onChange={(e) => setUrl(e.target.value)}
+                        />
+                      </div>
+                      <div className="flex space-x-4">
+                        <div className="flex flex-col space-y-2 w-3/5">
+                          <h1 className="font-semibold text-sm">Tags</h1>
+                          <div className="w-full">
+                            <MultipleSelector
+                              defaultOptions={options}
+                              placeholder="type to search tags..."
+                              creatable
+                              emptyIndicator={
+                                <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
+                                  no results found.
+                                </p>
+                              }
+                              onChange={(value: any) => setSelectedTags(value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-2 w-2/5 h-8">
+                          <h1 className="font-semibold text-sm">Folder</h1>
+                          <Select
+                            onValueChange={(value) => {
+                              const selectedFolder = folders.find(
+                                (folder) => folder.id === value
+                              );
+                              setSelectedFolderId(value);
+                              setSelectedFolderName(
+                                selectedFolder ? selectedFolder.name : ""
+                              );
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select">
+                                {selectedFolderName}
+                              </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent position="popper">
+                              {folders.map((folder) => (
+                                <SelectItem
+                                  key={folder.id}
+                                  value={folder.id}
+                                  className="cursor-pointer"
+                                >
+                                  {folder.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                   <DialogFooter>
                     {createBookmark.isLoading ? (
                       <Button variant="outline" disabled>
@@ -93,7 +168,9 @@ export default function Mind({ folderId }: MindProps) {
                     ) : (
                       <Button
                         type="submit"
-                        onClick={() => createBookmark.mutate(url)}
+                        onClick={() =>
+                          createBookmark.mutate(createBookmarkData)
+                        }
                       >
                         Save changes
                       </Button>
@@ -101,47 +178,9 @@ export default function Mind({ folderId }: MindProps) {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-
-              {/* end of add new bookmark  */}
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            {/* <Card>
-              <CardContent className="p-4">
-                <div className="grid gap-1 text-sm">
-                  <Link
-                    className="font-semibold line-clamp-2 hover:underline"
-                    href="#"
-                  >
-                    Tailwind CSS
-                    <Image
-                      src="/image/tailwind.png"
-                      width={1200}
-                      height={300}
-                      alt="Tailwind image"
-                      className="rounded-lg my-4"
-                    />
-                  </Link>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    A utility-first CSS framework for rapid UI development.
-                  </p>
-                  <div className="flex items-center space-x-1">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      Tags:
-                    </span>
-                    <div className="flex flex-wrap">
-                      <span className="inline-flex items-center px-2 py-1 mr-1 text-xs font-semibold leading-none text-gray-700 bg-gray-100 rounded-full">
-                        Tailwind
-                      </span>
-                      <span className="inline-flex items-center px-2 py-1 mr-1 text-xs font-semibold leading-none text-gray-700 bg-gray-100 rounded-full">
-                        CSS
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
-
             {isLoadBookmarks ? (
               <>
                 <BookmarkSkeleton />
