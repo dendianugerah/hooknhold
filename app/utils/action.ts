@@ -163,3 +163,17 @@ export async function getTag(userId: string) {
     throw  error;
   }
 }
+
+export async function deleteBookmark(userId: string, id: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${id}`, {
+      method: "DELETE",
+    });
+
+    const item = await response.json();
+    
+    return item.data;
+  } catch (error) {
+    throw  error;
+  }
+}

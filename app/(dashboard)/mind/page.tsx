@@ -29,6 +29,7 @@ import HeaderSection from "@/components/container/mind/header";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
 import useCreateBookmark from "@/hooks/createBookmark";
+import useDeleteBookmark from "@/hooks/deleteBookmark";
 interface MindProps {
   folderId?: string;
 }
@@ -51,6 +52,7 @@ export default function Mind({ folderId }: MindProps) {
   );
 
   const createBookmark = useCreateBookmark(userId, () => setIsOpen(false));
+  const deleteBookmark = useDeleteBookmark(userId);
   const createBookmarkData = {
     url: url,
     tags: selectedTags.map((tag) => tag.value),
@@ -188,7 +190,11 @@ export default function Mind({ folderId }: MindProps) {
               </>
             ) : (
               bookmarks?.map((bookmark) => (
-                <CardSection bookmark={bookmark} key={bookmark.id} />
+                <CardSection
+                  bookmark={bookmark}
+                  onDelete={() => deleteBookmark.mutate(bookmark.id)}
+                  key={bookmark.id}
+                />
               ))
             )}
           </div>
