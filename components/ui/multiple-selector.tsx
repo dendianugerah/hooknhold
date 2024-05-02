@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export interface Option {
+  id?: string;
   value: string;
   label: string;
   disable?: boolean;
@@ -30,6 +31,7 @@ interface GroupOption {
 interface MultipleSelectorProps {
   value?: Option[];
   defaultOptions?: Option[];
+  selectedId?: string;
   /** manually controlled options */
   options?: Option[];
   placeholder?: string;
@@ -74,6 +76,7 @@ interface MultipleSelectorProps {
     React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>,
     "value" | "placeholder" | "disabled"
   >;
+  onDelete?: (id: string) => void;
 }
 
 export interface MultipleSelectorRef {
@@ -181,6 +184,7 @@ const MultipleSelector = React.forwardRef<
       triggerSearchOnFocus = false,
       commandProps,
       inputProps,
+      onDelete,
     }: MultipleSelectorProps,
     ref: React.Ref<MultipleSelectorRef>
   ) => {
@@ -473,12 +477,20 @@ const MultipleSelector = React.forwardRef<
                                 onChange?.(newOptions);
                               }}
                               className={cn(
-                                "cursor-pointer text-black",
+                                "flex justify-between items-center cursor-pointer text-black",
                                 option.disable &&
                                   "cursor-default text-muted-foreground"
                               )}
                             >
                               {option.label}
+                              <button
+                                onMouseDown={(e) => {
+                                  onDelete?.(option.id as string);
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                              </button>
                             </CommandItem>
                           );
                         })}

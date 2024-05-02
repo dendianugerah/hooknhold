@@ -19,7 +19,7 @@ export default function ControlSection() {
           2
         </span>
       </Button>
-      <DropdownMenu>
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button className="ml-auto shrink-0 rounded-md" variant="outline">
             <ArrowUpDownIcon className="w-4 h-4 mr-2" />
@@ -36,7 +36,7 @@ export default function ControlSection() {
             <DropdownMenuRadioItem value="oldest">Oldest</DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu> */}
     </div>
   );
 }

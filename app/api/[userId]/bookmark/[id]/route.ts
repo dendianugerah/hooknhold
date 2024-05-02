@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import db, { bookmark } from "@/lib/database";
+import db, { bookmark, bookmark_tag } from "@/lib/database";
 import { Response } from "@/app/utils/response";
 import { and, eq } from "drizzle-orm";
 
@@ -11,9 +11,15 @@ export async function DELETE(
     const userId = query.params.userId;
     const bookmarkId = query.params.id;
 
-    await db
-      .delete(bookmark)
-      .where(and(eq(bookmark.user_id, userId), eq(bookmark.id, bookmarkId)));
+    await db.transaction(async (db) => {
+      await db
+        .delete(bookmark_tag)
+        .where(eq(bookmark_tag.bookmark_id, bookmarkId));
+
+      await db
+        .delete(bookmark)
+        .where(and(eq(bookmark.user_id, userId), eq(bookmark.id, bookmarkId)));
+    });
 
     return Response(null, 200, "Bookmark deleted successfully");
   } catch (error) {

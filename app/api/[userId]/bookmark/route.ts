@@ -10,15 +10,6 @@ import { NextRequest, NextResponse } from "next/server";
 import db, { bookmark, bookmark_tag, tag } from "@/lib/database";
 import { PgSelect } from "drizzle-orm/pg-core";
 
-let browserInstance: Browser | null = null;
-
-async function getBrowserInstance(): Promise<Browser> {
-  if (!browserInstance) {
-    browserInstance = await puppeteer.launch();
-  }
-  return browserInstance;
-}
-
 async function uploadScreenshot(
   data: Buffer,
   userId: string,
@@ -82,7 +73,7 @@ export async function POST(
     const tmpDir = `./tmp/`;
     const path = `${Math.random()}.webp`;
 
-    const browser = await getBrowserInstance();
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.setViewport({ width: 1200, height: 600 });
@@ -128,7 +119,7 @@ export async function POST(
       await handleTags(tags, userId, bookmarkId);
     }
 
-    return NextResponse.json(userId);
+    return Response(null, 200, "Bookmark created successfully");
   } catch (error) {
     console.error(error);
     return NextResponse.json(500);

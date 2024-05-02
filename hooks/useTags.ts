@@ -18,6 +18,7 @@ export const useTags = (userId: string) => {
   }, [data]);
 
   const options = tags.map((tag) => ({
+    id: tag.id as string,
     label: tag.name as string,
     value: tag.name as string,
   }));

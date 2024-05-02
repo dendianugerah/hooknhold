@@ -1,6 +1,6 @@
 "use client";
 import { SearchContext } from "../layout";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Option } from "@/components/ui/multiple-selector";
 import { PlusIcon, ShareIcon, LoadingCircleIcon } from "@/components/icon";
@@ -30,6 +30,7 @@ import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
 import useCreateBookmark from "@/hooks/createBookmark";
 import useDeleteBookmark from "@/hooks/deleteBookmark";
+import useDeleteTag from "@/hooks/deleteTag";
 interface MindProps {
   folderId?: string;
 }
@@ -53,11 +54,19 @@ export default function Mind({ folderId }: MindProps) {
 
   const createBookmark = useCreateBookmark(userId, () => setIsOpen(false));
   const deleteBookmark = useDeleteBookmark(userId);
-  const createBookmarkData = {
+  const createBookmarkData: any = {
     url: url,
-    tags: selectedTags.map((tag) => tag.value),
-    folderId: selectedFolderId,
   };
+
+  if (selectedTags.length > 0) {
+    createBookmarkData.tags = selectedTags.map((tag) => tag.value);
+  }
+
+  if (selectedFolderId) {
+    createBookmarkData.folderId = selectedFolderId;
+  }
+
+  const deleteTag = useDeleteTag(userId);
 
   const pathname = usePathname();
   const isMindRoute = pathname === "/mind";
@@ -117,6 +126,9 @@ export default function Mind({ folderId }: MindProps) {
                             <MultipleSelector
                               defaultOptions={options}
                               placeholder="type to search tags..."
+                              onDelete={(id: string) => {
+                                deleteTag.mutate(id);
+                              }}
                               creatable
                               emptyIndicator={
                                 <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
@@ -170,9 +182,16 @@ export default function Mind({ folderId }: MindProps) {
                     ) : (
                       <Button
                         type="submit"
-                        onClick={() =>
-                          createBookmark.mutate(createBookmarkData)
-                        }
+                        onClick={() => {
+                          createBookmark.mutate(createBookmarkData, {
+                            onSuccess: () => {
+                              setUrl("");
+                              setSelectedTags([]);
+                              setSelectedFolderId("");
+                              setSelectedFolderName("Select");
+                            },
+                          });
+                        }}
                       >
                         Save changes
                       </Button>
