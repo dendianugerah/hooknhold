@@ -5,6 +5,10 @@ import { usePathname } from "next/navigation";
 import { Option } from "@/components/ui/multiple-selector";
 import { PlusIcon, ShareIcon, LoadingCircleIcon } from "@/components/icon";
 import {
+  BookmarkCardView,
+  BookmarkListView,
+} from "@/components/container/mind/view";
+import {
   Button,
   Input,
   Dialog,
@@ -24,7 +28,6 @@ import useTags from "@/hooks/useTags";
 import useUserId from "@/hooks/useUserId";
 import useFolders from "@/hooks/useFolder";
 import useBookmarks from "@/hooks/useBookmarks";
-import BookmarkCardSection from "@/components/container/mind/card";
 import HeaderSection from "@/components/container/mind/header";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
@@ -39,6 +42,7 @@ export default function Mind({ folderId }: MindProps) {
   const userId = useUserId();
   const [url, setUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isCardView, setIsCardView] = useState(true);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
   const [selectedFolderId, setSelectedFolderId] = useState("");
   const [selectedFolderName, setSelectedFolderName] = useState("Select");
@@ -78,7 +82,12 @@ export default function Mind({ folderId }: MindProps) {
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-4 md:p-6 md:pt-2 lg:ml-[320px] xl:ml-[350px]">
           <div className="flex flex-col md:flex-row items-start md:items-center py-2 md:justify-between">
-            <div>{/* <ControlSection /> */}</div>
+            <div>
+              <ControlSection
+                isCardView={isCardView}
+                setIsCardView={setIsCardView}
+              />
+            </div>
             <div className="flex gap-x-2">
               {!isMindRoute && (
                 <Button
@@ -199,7 +208,11 @@ export default function Mind({ folderId }: MindProps) {
               </Dialog>
             </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div
+            className={`grid ${
+              isCardView ? "grid md:grid-cols-2 gap-4" : "flex flex-col"
+            }`}
+          >
             {isLoadBookmarks ? (
               <>
                 <BookmarkSkeleton />
@@ -207,11 +220,21 @@ export default function Mind({ folderId }: MindProps) {
               </>
             ) : (
               bookmarks?.map((bookmark) => (
-                <BookmarkCardSection
-                  bookmark={bookmark}
-                  onDelete={() => deleteBookmark.mutate(bookmark.id)}
-                  key={bookmark.id}
-                />
+                <>
+                  {isCardView ? (
+                    <BookmarkCardView
+                      bookmark={bookmark}
+                      onDelete={() => deleteBookmark.mutate(bookmark.id)}
+                      key={bookmark.id}
+                    />
+                  ) : (
+                    <BookmarkListView
+                      bookmark={bookmark}
+                      onDelete={() => deleteBookmark.mutate(bookmark.id)}
+                      key={bookmark.id}
+                    />
+                  )}
+                </>
               ))
             )}
           </div>

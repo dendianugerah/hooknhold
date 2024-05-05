@@ -52,7 +52,7 @@ function DeleteCardDialog({ open, onClose, onDelete }: DeleteCardDialogProps) {
   );
 }
 
-export default function BookmarkCardSection({
+export function BookmarkCardView({
   bookmark,
   onDelete,
 }: {
@@ -141,5 +141,55 @@ export default function BookmarkCardSection({
         onDelete={handleDelete}
       />
     </>
+  );
+}
+
+export function BookmarkListView({
+  bookmark,
+  onDelete,
+}: {
+  bookmark: BookmarkData;
+  onDelete: () => void;
+}) {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const handleDelete = () => {
+    onDelete();
+    setIsDeleteDialogOpen(false);
+  };
+
+  return (
+    <div className="p-2 border-b border-gray-200 group">
+      <div className="flex justify-between items-center">
+        <h2 className="font-semibold line-clamp-2">{bookmark.data.title}</h2>
+        <button onClick={() => setIsDeleteDialogOpen(true)}>
+          <X className="w-4 h-4 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
+        </button>
+      </div>
+      <div className="flex flex-wrap justify-between items-center text-xs mb-2">
+        <div className="flex items-center">
+          <Link
+            href={bookmark.data.url}
+            target="_blank"
+            className="flex items-center text-[#579DFF] font-medium "
+          >
+            View site
+            <ChevronRight className="w-4 h-4 ml-[2px] transition-transform duration-200 group-hover:translate-x-1 hover:font-bold" />
+          </Link>
+        </div>
+        <p className="text-gray-500">
+          {new Date(bookmark.data.created_at).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </p>
+      </div>
+      <DeleteCardDialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onDelete={handleDelete}
+      />
+    </div>
   );
 }
