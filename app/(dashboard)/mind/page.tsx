@@ -1,6 +1,6 @@
 "use client";
 import { SearchContext } from "../layout";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Option } from "@/components/ui/multiple-selector";
 import { PlusIcon, ShareIcon, LoadingCircleIcon } from "@/components/icon";
@@ -24,7 +24,7 @@ import useTags from "@/hooks/useTags";
 import useUserId from "@/hooks/useUserId";
 import useFolders from "@/hooks/useFolder";
 import useBookmarks from "@/hooks/useBookmarks";
-import CardSection from "@/components/container/mind/card";
+import BookmarkCardSection from "@/components/container/mind/card";
 import HeaderSection from "@/components/container/mind/header";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
@@ -78,9 +78,7 @@ export default function Mind({ folderId }: MindProps) {
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-4 md:p-6 md:pt-2 lg:ml-[320px] xl:ml-[350px]">
           <div className="flex flex-col md:flex-row items-start md:items-center py-2 md:justify-between">
-            <div>
-              <ControlSection />
-            </div>
+            <div>{/* <ControlSection /> */}</div>
             <div className="flex gap-x-2">
               {!isMindRoute && (
                 <Button
@@ -209,7 +207,7 @@ export default function Mind({ folderId }: MindProps) {
               </>
             ) : (
               bookmarks?.map((bookmark) => (
-                <CardSection
+                <BookmarkCardSection
                   bookmark={bookmark}
                   onDelete={() => deleteBookmark.mutate(bookmark.id)}
                   key={bookmark.id}

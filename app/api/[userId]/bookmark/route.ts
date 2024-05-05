@@ -1,14 +1,14 @@
 import fs from "fs";
+import puppeteer from "puppeteer";
 import { v4 as uuid } from "uuid";
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { Upload } from "@aws-sdk/lib-storage";
+import { PgSelect } from "drizzle-orm/pg-core";
 import { S3Client } from "@aws-sdk/client-s3";
-import puppeteer, { Browser } from "puppeteer";
 import { Response } from "@/app/utils/response";
 import { BookmarkData } from "@/app/utils/definition";
 import { NextRequest, NextResponse } from "next/server";
 import db, { bookmark, bookmark_tag, tag } from "@/lib/database";
-import { PgSelect } from "drizzle-orm/pg-core";
 
 async function uploadScreenshot(
   data: Buffer,
@@ -150,6 +150,7 @@ export async function GET(
     .leftJoin(bookmark_tag, eq(bookmark.id, bookmark_tag.bookmark_id))
     .leftJoin(tag, eq(tag.id, bookmark_tag.tag_id))
     .where(sql`bookmark.user_id = ${userId}`)
+    .orderBy(desc(bookmark.created_at))
     .$dynamic();
 
   if (folderId) {
@@ -174,7 +175,7 @@ export async function GET(
           url: bookmark.url as string,
           description: bookmark.description as string,
           image: bookmark.image as string,
-          created_at: bookmark.created_at as string,
+          created_at: bookmark.created_at as unknown as string,
           updated_at: bookmark.updated_at as string,
           deleted_at: bookmark.deleted_at,
         },

@@ -1,4 +1,11 @@
-import { pgTable, uuid, varchar, time, jsonb } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  uuid,
+  varchar,
+  time,
+  jsonb,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: uuid("id").primaryKey(),
@@ -17,7 +24,7 @@ export const bookmark = pgTable("bookmark", {
   url: varchar("url", { length: 255 }),
   description: varchar("description", { length: 255 }),
   image: varchar("image", { length: 255 }),
-  created_at: time("created_at", { withTimezone: true }).defaultNow(),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updated_at: time("updated_at", { withTimezone: true }).defaultNow(),
   deleted_at: time("deleted_at", {}),
 });

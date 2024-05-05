@@ -14,29 +14,21 @@ export default function Home() {
       <div className="flex flex-col">
         <section className="bg-white">
           <NavbarSection />
-          <section className="w-full pt-12 md:pt-24 lg:pt-32 border-t mb-36">
+          <section className="w-full pt-12 md:pt-24 lg:pt-32 border-t pb-36 bg-[#1E1E1E]">
             <div className="container space-y-10 px-4 md:px-6 xl:space-y-16">
-              <div className="grid max-w-7xl mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
-                <div className="flex flex-col justify-center space-y-4">
+              <div className="max-w-7xl mx-auto gap-4 px-4 sm:px-6 md:px-10 md:gap-16">
+                <div className="flex flex-col justify-center space-y-4 text-center">
                   <div className="space-y-2">
                     <div className="inline-block rounded-lg bg-[#131313] px-3 py-1 text-sm dark:bg-gray-800 text-white">
                       Introducing
                     </div>
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
                       Hooknhold
                     </h2>
-                    <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+                    <p className="text-[#DEDEDE] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                       The modern visual bookmark manager for the web. Save,
                       organize, and share your favorite links with ease.
                     </p>
-                  </div>
-                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                    <Link
-                      className="inline-flex h-10 items-center justify-center rounded-xl border bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
-                      href="/mind"
-                    >
-                      Get Started
-                    </Link>
                   </div>
                 </div>
                 <div className="relative group">
@@ -44,9 +36,9 @@ export default function Home() {
                     <Image
                       alt="Image"
                       className="object-cover object-center"
-                      height={310}
+                      height={500}
                       src="/image/hero.png"
-                      width={550}
+                      width={1280}
                       quality={100}
                       unoptimized
                     />
