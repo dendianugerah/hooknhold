@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { BookmarkIcon, ChevronDownIcon } from "@/components/icon";
+import { ChevronDownIcon, BookmarkIcon } from "@/components/icon";
 import {
   Button,
   DropdownMenu,
@@ -49,8 +49,8 @@ export default function HeaderSection() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem disabled>Settings</DropdownMenuItem>
+          <DropdownMenuItem disabled>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link

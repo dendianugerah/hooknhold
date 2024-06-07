@@ -13,6 +13,7 @@ import {
   Package2Icon,
   FolderIcon,
 } from "@/components/icon";
+import { Hash } from "lucide-react";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useContext, useState } from "react";
 import Link from "next/link";
@@ -22,6 +23,7 @@ import useUserId from "@/hooks/useUserId";
 import useFolders from "@/hooks/useFolder";
 import useDeleteFolder from "@/hooks/deleteFolder";
 import FolderMenu from "./folderMenu";
+import useTags from "@/hooks/useTags";
 
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   return (
@@ -47,6 +49,7 @@ export default function SidebarSection() {
   const [selectedFolderId, setSelectedFolderId] = useState("");
   const { setSearch } = useContext(SearchContext);
   const { folders } = useFolders(userId);
+  const { options: tags } = useTags(userId);
 
   const handleDeleteClick = (folderId: string) => {
     setSelectedFolderId(folderId);
@@ -88,7 +91,7 @@ export default function SidebarSection() {
                   </AccordionTrigger>
                 )}
                 <AccordionContent>
-                  <div className="overflow-y-auto max-h-96 ml-7">
+                  <div className="overflow-y-auto max-h-96 ml-3">
                     <FolderMenu
                       folders={folders}
                       handleDeleteClick={handleDeleteClick}
@@ -102,6 +105,26 @@ export default function SidebarSection() {
                     )}
                   </div>
                 </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                {tags.length > 0 && (
+                  <>
+                    <AccordionTrigger className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50">
+                      <span className="flex gap-3 items-center">
+                        <Hash className="h-4 w-4 transition-none" />
+                        Tag
+                      </span>
+                    </AccordionTrigger>
+
+                    <AccordionContent className="overflow-y-auto max-h-96 ml-7">
+                      {tags.map((tag) => (
+                        <div key={tag.id}>{tag.label}</div>
+                      ))}
+                    </AccordionContent>
+                  </>
+                )}
               </AccordionItem>
             </Accordion>
 
