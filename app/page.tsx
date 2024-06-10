@@ -7,6 +7,107 @@ import {
   FolderSyncIcon,
 } from "@/components/icon";
 import NavbarSection from "@/components/container/homepage/navbar";
+import {
+  LinearGradient,
+  BorderBeam,
+  BentoCard,
+  BentoGrid,
+  Marquee,
+} from "@/components/ui/magic";
+import {
+  Command,
+  CommandList,
+  CommandInput,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
+import { FileTextIcon, InputIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
+
+const files = [
+  {
+    name: "Google",
+    body: "Bitcoin is a cryptocurrency invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto.",
+  },
+  {
+    name: "Spreadsheet",
+    body: "A spreadsheet or worksheet is a file made of rows and columns that help sort data, arrange data easily, and calculate numerical data.",
+  },
+  {
+    name: "Image",
+    body: "Scalable Vector Graphics is an Extensible Markup Language-based vector image format for two-dimensional graphics with support for interactivity and animation.",
+  },
+  {
+    name: "Google Drive",
+    body: "GPG keys are used to encrypt and decrypt email, files, directories, and whole disk partitions and to authenticate messages.",
+  },
+  {
+    name: "Seed Phrase",
+    body: "A seed phrase, seed recovery phrase or backup seed phrase is a list of words which store all the information needed to recover Bitcoin funds on-chain.",
+  },
+];
+
+const features = [
+  {
+    Icon: FileTextIcon,
+    name: "Never lose a link again.",
+    description:
+      "Of course, you can always rely on this to keep your bookmarks safe and secure.",
+    href: "/",
+    cta: "Learn more",
+    className: "col-span-3 lg:col-span-1",
+    background: (
+      <Marquee
+        pauseOnHover
+        className="absolute top-10 [--duration:20s] [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)] "
+      >
+        {files.map((f, idx) => (
+          <figure
+            key={idx}
+            className={cn(
+              "relative w-32 cursor-pointer overflow-hidden rounded-xl border p-4",
+              "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
+              "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
+              "transform-gpu blur-[1px] transition-all duration-300 ease-out hover:blur-none"
+            )}
+          >
+            <div className="flex flex-row items-center gap-2">
+              <div className="flex flex-col">
+                <figcaption className="text-sm font-medium dark:text-white ">
+                  {f.name}
+                </figcaption>
+              </div>
+            </div>
+            <blockquote className="mt-2 text-xs">{f.body}</blockquote>
+          </figure>
+        ))}
+      </Marquee>
+    ),
+  },
+  {
+    Icon: InputIcon,
+    name: "Easy to use.",
+    description:
+      "Designed to be intuitive and easy to use. Search your favorite links in seconds.",
+    href: "/",
+    cta: "Learn more",
+    className: "col-span-3 lg:col-span-2",
+    background: (
+      <Command className="absolute right-10 top-10 w-[70%] origin-top translate-x-0 border transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)] group-hover:-translate-x-10">
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions">
+            <CommandItem>Hardvard Business Review</CommandItem>
+            <CommandItem>Quora</CommandItem>
+            <CommandItem>Medium</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    ),
+  },
+];
 
 export default function Home() {
   return (
@@ -31,18 +132,23 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative group">
+                <div className="relative mt-16">
                   <div className="relative overflow-hidden rounded-lg shadow-md">
                     <Image
                       alt="Image"
                       className="object-cover object-center"
                       height={500}
                       src="/image/hero.png"
-                      width={1280}
+                      width={1200}
                       quality={100}
                       unoptimized
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <BorderBeam />
+
+                    <LinearGradient from="transparent" to="#1E1E1E" />
+                    <LinearGradient from="transparent" to="#1E1E1E" />
+
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 transition-opacity duration-300"></div>
                   </div>
                 </div>
               </div>
@@ -50,6 +156,21 @@ export default function Home() {
           </section>
         </section>
         <main className="max-w-7xl mx-auto">
+          <section className="mt-36">
+            <div>
+              <h2 className="text-5xl font-medium">
+                Designed for your web journey.
+              </h2>
+            </div>
+            <div className="flex gap-6 py-8">
+              <BentoGrid>
+                {features.map((feature, idx) => (
+                  <BentoCard key={idx} {...feature} />
+                ))}
+              </BentoGrid>
+            </div>
+          </section>
+
           <section
             className="w-full py-12 md:py-24 lg:py-32 bg-[#1F1F1F] rounded-3xl mt-36"
             id="feature"
@@ -68,7 +189,7 @@ export default function Home() {
                     web journey.
                   </p>
                 </div>
-                <div className="grid gap-4 border-t pt-4">
+                <div className="relative grid gap-4 border-t pt-4">
                   <div className="grid gap-1">
                     <span className="flex items-center gap-2">
                       <FolderIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
@@ -110,30 +231,6 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="mt-36">
-            <div>
-              <h2 className="text-5xl font-medium">
-                Designed for your web journey.
-              </h2>
-            </div>
-            <div className="flex gap-6 py-8">
-              <div className="gap-2 bg-white py-8 rounded-3xl px-8 pr-64">
-                <h3 className="font-medium">Easy to use.</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Designed to be intuitive and easy to use. Save your favorite
-                  links in seconds.
-                </p>
-              </div>
-              <div className="gap-2 bg-white py-8 rounded-3xl px-8">
-                <h3 className="font-medium">Never lose a link again.</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Of course, you can always rely on this to keep your bookmarks
-                  safe and secure.
-                </p>
               </div>
             </div>
           </section>
