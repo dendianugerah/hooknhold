@@ -15,7 +15,7 @@ import {
 } from "@/components/icon";
 import { Hash } from "lucide-react";
 import { SearchContext } from "@/app/(dashboard)/layout";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Link from "next/link";
 import DeleteFolder from "./deleteFolder";
 import CreateFolder from "./createFolder";
@@ -51,10 +51,10 @@ export default function SidebarSection() {
   const { folders } = useFolders(userId);
   const { options: tags } = useTags(userId);
 
-  const handleDeleteClick = (folderId: string) => {
+  const handleDeleteClick = useCallback((folderId: string) => {
     setSelectedFolderId(folderId);
     setShowDeleteAlert(true);
-  };
+  }, []);
 
   return (
     <div className="hidden fixed h-full w-[320px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40">

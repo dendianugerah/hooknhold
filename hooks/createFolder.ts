@@ -13,7 +13,9 @@ export const useCreateFolder = (
       console.error("Error creating folder:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["folderData", userId]); // folderData is the key for the query, refer to useFolders.ts
+      queryClient.invalidateQueries(["folderData", userId], {
+        refetchInactive: true,
+      }); // folderData is the key for the query, refer to useFolders.ts
       onSuccessCallback();
     },
   });
