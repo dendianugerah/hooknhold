@@ -17,6 +17,7 @@ import {
 } from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
 import { Badge } from "@/components/ui/badge";
+
 interface DeleteCardDialogProps {
   open: boolean;
   onClose: () => void;
@@ -66,6 +67,10 @@ export function BookmarkCardView({
     setIsDeleteDialogOpen(false);
   };
 
+  const handleDeleteTag = (tagId: string) => {
+    // Logic to delete tag will be implemented later
+  };
+
   return (
     <>
       <Card key={bookmark.id}>
@@ -100,24 +105,28 @@ export function BookmarkCardView({
               </p>
             </div>
             <footer className="flex flex-wrap items-center justify-between">
-              {bookmark.tags.some((tag) => Object.keys(tag).length > 0) && (
-                <div className="flex items-center space-x-1">
-                  <span className="text-xs text-gray-700 dark:text-gray-400">
-                    Tags:
-                  </span>
-                  <div className="flex flex-wrap">
-                    {bookmark.tags.map((tag, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="mx-[2px] text-gray-700"
+              <div className="flex items-center space-x-1">
+                <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
+                  Tags:
+                </span>
+                <div className="flex flex-wrap items-center space-x-1">
+                  {bookmark.tags.map((tag, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="text-gray-700 flex items-center transition-all duration-200 ease-in-out"
+                    >
+                      <span className="mr-1 gap-x-2">{tag.name}</span>
+                      <button 
+                        onClick={() => handleDeleteTag(tag.name)} 
+                        className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
                       >
-                        {tag.name}{" "}
-                      </Badge>
-                    ))}
-                  </div>
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  ))}
                 </div>
-              )}
+              </div>
               <div className="flex items-center">
                 <Badge variant="secondary" className="text-gray-700">
                   <span className="mr-2 rounded-full bg-[#579DFF] w-2 h-2"></span>
@@ -158,6 +167,10 @@ export function BookmarkListView({
     setIsDeleteDialogOpen(false);
   };
 
+  const handleDeleteTag = (tagId: string) => {
+    // Logic to delete tag will be implemented later
+  };
+
   return (
     <div className="p-2 border-b border-gray-200 group">
       <div className="flex justify-between items-center">
@@ -184,6 +197,23 @@ export function BookmarkListView({
             year: "numeric",
           })}
         </p>
+      </div>
+      <div className="flex flex-wrap items-center mt-2">
+        <span className="text-xs text-gray-700 dark:text-gray-400 mr-2">
+          Tags:
+        </span>
+        {bookmark.tags.map((tag, index) => (
+          <Badge
+            key={index}
+            variant="secondary"
+            className="mx-[2px] text-gray-700 flex items-center mb-1"
+          >
+            {tag.name}{" "}
+            <button onClick={() => handleDeleteTag(tag.name)} className="ml-1">
+              <X className="w-3 h-3" />
+            </button>
+          </Badge>
+        ))}
       </div>
       <DeleteCardDialog
         open={isDeleteDialogOpen}
