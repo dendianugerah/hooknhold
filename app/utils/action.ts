@@ -156,6 +156,24 @@ export async function deleteFolder(userId: string, id: string) {
   }
 }
 
+export async function editFolder(userId: string, id: string, name: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/folder?id=${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    const item = await response.json();
+
+    return item.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getTag(userId: string) {
   try {
     const response = await fetch(`${API_BASE_URL}/${userId}/tag`, {

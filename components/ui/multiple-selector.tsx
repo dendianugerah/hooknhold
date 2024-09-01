@@ -483,14 +483,14 @@ const MultipleSelector = React.forwardRef<
                               )}
                             >
                               {option.label}
-                              <button
+                              {/* <button
                                 onMouseDown={(e) => {
                                   onDelete?.(option.id as string);
                                   e.stopPropagation();
                                 }}
                               >
                                 <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                              </button>
+                              </button> */}
                             </CommandItem>
                           );
                         })}

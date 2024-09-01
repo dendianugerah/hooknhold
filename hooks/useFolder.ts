@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 export const useFolders = (userId: string) => {
   const { data, isLoading } = useQuery<FolderData[]>({
     queryKey: ["folderData", userId],
-    queryFn: () => getFolder(userId),
+    queryFn: async () => getFolder(userId),
     enabled: !!userId,
   });
 

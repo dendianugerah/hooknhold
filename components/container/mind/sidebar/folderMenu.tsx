@@ -8,6 +8,8 @@ import {
 } from "@/components/ui";
 import { FolderIcon, MoreVerticalIcon } from "@/components/icon";
 import { FolderData } from "@/app/utils/definition";
+import { useCallback } from "react";
+import RenameFolder from "./renameFolder";
 
 interface FolderDropdownMenuProps {
   folderId: string;
@@ -63,29 +65,51 @@ function FolderDropdownMenu({
 interface FolderMenuProps {
   folders: FolderData[];
   handleDeleteClick: (id: string) => void;
+  handleRenameClick: (id: string) => void;
+  editingFolder: string | null;
+  onRename: (id: string, newName: string) => void;
 }
 
-function FolderMenu({ folders, handleDeleteClick }: FolderMenuProps) {
+function FolderMenu({
+  folders,
+  handleDeleteClick,
+  handleRenameClick,
+  editingFolder,
+  onRename,
+}: FolderMenuProps) {
+  const handleCancel = useCallback(() => {
+    handleRenameClick("");
+  }, [handleRenameClick]);
+
   return (
     <>
       {folders.map((folder) => (
-        <Link
-          key={folder.id}
-          className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 "
-          href={`/mind/${folder.id}`}
-        >
-          <div className="flex items-center gap-3">
-            <FolderIcon className="h-4 w-4" />
-            {folder.name}
-          </div>
-          <span className="translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
-            <FolderDropdownMenu
-              folderId={folder.id}
-              handleDeleteClick={handleDeleteClick}
-              handleRenameClick={(id) => console.log(id)}
-            />
-          </span>
-        </Link>
+        <div key={folder.id}>
+        {editingFolder === folder.id ? (
+          <RenameFolder
+            folder={folder}
+            onRename={onRename}
+            onCancel={handleCancel}
+          />
+        ) : (
+          <Link
+            className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+            href={`/mind/${folder.id}`}
+          >
+            <div className="flex items-center gap-3">
+              <FolderIcon className="h-4 w-4" />
+              {folder.name}
+            </div>
+            <span className="translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+              <FolderDropdownMenu
+                folderId={folder.id}
+                handleDeleteClick={handleDeleteClick}
+                handleRenameClick={handleRenameClick}
+              />
+            </span>
+          </Link>
+        )}
+        </div>
       ))}
     </>
   );

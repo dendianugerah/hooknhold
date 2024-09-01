@@ -24,16 +24,12 @@ import {
   SelectTrigger,
   MultipleSelector,
 } from "@/components/ui";
-import useTags from "@/hooks/useTags";
 import useUserId from "@/hooks/useUserId";
-import useFolders from "@/hooks/useFolder";
-import useBookmarks from "@/hooks/useBookmarks";
 import HeaderSection from "@/components/container/mind/header";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
-import useCreateBookmark from "@/hooks/createBookmark";
-import useDeleteBookmark from "@/hooks/deleteBookmark";
-import useDeleteTag from "@/hooks/deleteTag";
+import { useCreateBookmark, useDeleteBookmark, useBookmarks, useTags, useFolders } from "@/hooks";
+
 interface MindProps {
   folderId?: string;
 }
@@ -69,8 +65,6 @@ export default function Mind({ folderId }: MindProps) {
   if (selectedFolderId) {
     createBookmarkData.folderId = selectedFolderId;
   }
-
-  const deleteTag = useDeleteTag(userId);
 
   const pathname = usePathname();
   const isMindRoute = pathname === "/mind";
@@ -133,9 +127,6 @@ export default function Mind({ folderId }: MindProps) {
                             <MultipleSelector
                               defaultOptions={options}
                               placeholder="type to search tags..."
-                              onDelete={(id: string) => {
-                                deleteTag.mutate(id);
-                              }}
                               creatable
                               emptyIndicator={
                                 <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">

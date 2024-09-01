@@ -13,12 +13,8 @@ export const useDeleteFolder = (
       console.error("Error deleting folder:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["folderData", userId], {
-        refetchInactive: true,
-      }); // folderData is the key for the query, refer to useFolders.ts
-      queryClient.invalidateQueries(["bookmarkData", userId], {
-        refetchInactive: true,
-      }); // bookmarkData is the key for the query, refer to useBookmarks.ts
+      queryClient.invalidateQueries(["folderData", userId]),
+        queryClient.invalidateQueries(["bookmarkData", userId]); // bookmarkData is the key for the query, refer to useBookmarks.ts
       onSuccessCallback();
     },
   });
