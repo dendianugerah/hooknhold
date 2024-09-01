@@ -1,8 +1,8 @@
 import { v4 as uuid } from "uuid";
 import { NextRequest } from "next/server";
-import db, { folder, bookmark } from "@/lib/database";
+import db, { folder, bookmark, tag, bookmark_tag } from "@/lib/database";
 import { Response } from "@/app/utils/response";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 
 export async function POST(
   req: NextRequest,
@@ -89,11 +89,19 @@ export async function DELETE(
     const folderId = req.nextUrl.searchParams.get("id") as string;
 
     await db.transaction(async (trx) => {
+
+      const bookmarksInFolder = await trx.select({id: bookmark.id}).from(bookmark).where(eq(bookmark.folder_id, folderId));
+      if (bookmarksInFolder.length > 0 ) {
+        const bookmarkIds = bookmarksInFolder.map(b => b.id);
+
+        await trx.delete(bookmark_tag).where(inArray(bookmark_tag.bookmark_id, bookmarkIds));
+      }
+
+      await trx.delete(bookmark).where(eq(bookmark.folder_id, folderId));
+
       await trx
         .delete(folder)
         .where(and(eq(folder.id, folderId), eq(folder.user_id, userId)));
-
-      await trx.delete(bookmark).where(eq(bookmark.folder_id, folderId));
     });
 
     return Response(null, 200, "Folder deleted successfully");
