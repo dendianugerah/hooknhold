@@ -61,6 +61,7 @@ export function BookmarkCardView({
   onDelete: () => void;
 }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const hasTags = bookmark.tags.length > 0 && bookmark.tags[0] && Object.keys(bookmark.tags[0]).length > 0;
 
   const handleDelete = () => {
     onDelete();
@@ -71,16 +72,17 @@ export function BookmarkCardView({
     // Logic to delete tag will be implemented later
   };
 
+
   return (
     <>
       <Card key={bookmark.id}>
         <CardContent className="p-4 group">
           <div className="grid gap-1 text-sm">
             <div className="mb-1">
-              <h2 className=" flex items-center justify-between font-semibold line-clamp-2">
+              <h2 className=" flex items-center justify-between font-semibold line-clamp-2 text-lg">
                 {bookmark.data.title}
                 <button onClick={() => setIsDeleteDialogOpen(true)}>
-                  <X className="w-4 h-4 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
+                  <X className="w-4 h-4 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all hover:text-red-500 transition-colors" />
                 </button>
               </h2>
               <div className="flex items-center">
@@ -89,7 +91,7 @@ export function BookmarkCardView({
                   target="_blank"
                   className="flex items-center text-[#579DFF] font-medium "
                 >
-                  View site
+                  Visit site
                   <ChevronRight className="w-4 h-4 ml-[2px] transition-transform duration-200 group-hover:translate-x-1 hover:font-bold" />
                 </Link>
               </div>
@@ -105,28 +107,30 @@ export function BookmarkCardView({
               </p>
             </div>
             <footer className="flex flex-wrap items-center justify-between">
-              <div className="flex items-center space-x-1">
-                <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
-                  Tags:
-                </span>
-                <div className="flex flex-wrap items-center space-x-1">
-                  {bookmark.tags.map((tag, index) => (
-                    <Badge
-                      key={index}
-                      variant="secondary"
-                      className="text-gray-700 flex items-center transition-all duration-200 ease-in-out"
-                    >
-                      <span className="mr-1 gap-x-2">{tag.name}</span>
-                      <button 
-                        onClick={() => handleDeleteTag(tag.name)} 
-                        className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
+              {hasTags && (
+                <div className="flex items-center space-x-1">
+                  <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
+                    Tags:
+                  </span>
+                  <div className="flex flex-wrap items-center space-x-1">
+                    {bookmark.tags.map((tag, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="text-gray-700 flex items-center transition-all duration-200 ease-in-out"
                       >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </Badge>
-                  ))}
+                        <span className="mr-1 gap-x-2">{tag.name}</span>
+                        <button 
+                          onClick={() => handleDeleteTag(tag.name)} 
+                          className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
+                        >
+                          <X className="w-3 h-3 hover:text-red-500 transition-colors" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="flex items-center">
                 <Badge variant="secondary" className="text-gray-700">
                   <span className="mr-2 rounded-full bg-[#579DFF] w-2 h-2"></span>
@@ -161,6 +165,7 @@ export function BookmarkListView({
   onDelete: () => void;
 }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const hasTags = bookmark.tags.length > 0 && bookmark.tags[0] && Object.keys(bookmark.tags[0]).length > 0;
 
   const handleDelete = () => {
     onDelete();
@@ -186,7 +191,7 @@ export function BookmarkListView({
             target="_blank"
             className="flex items-center text-[#579DFF] font-medium "
           >
-            View site
+            Visit site
             <ChevronRight className="w-4 h-4 ml-[2px] transition-transform duration-200 group-hover:translate-x-1 hover:font-bold" />
           </Link>
         </div>
@@ -199,21 +204,30 @@ export function BookmarkListView({
         </p>
       </div>
       <div className="flex flex-wrap items-center mt-2">
-        <span className="text-xs text-gray-700 dark:text-gray-400 mr-2">
+      {hasTags && (
+      <div className="flex items-center space-x-1">
+        <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
           Tags:
         </span>
-        {bookmark.tags.map((tag, index) => (
-          <Badge
-            key={index}
-            variant="secondary"
-            className="mx-[2px] text-gray-700 flex items-center mb-1"
-          >
-            {tag.name}{" "}
-            <button onClick={() => handleDeleteTag(tag.name)} className="ml-1">
-              <X className="w-3 h-3" />
-            </button>
-          </Badge>
-        ))}
+        <div className="flex flex-wrap items-center space-x-1">
+          {bookmark.tags.map((tag, index) => (
+            <Badge
+              key={index}
+              variant="secondary"
+              className="text-gray-700 flex items-center transition-all duration-200 ease-in-out"
+            >
+              <span className="mr-1 gap-x-2">{tag.name}</span>
+              <button 
+                onClick={() => handleDeleteTag(tag.name)} 
+                className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
+              >
+                <X className="w-3 h-3 hover:text-red-500 transition-colors" />
+              </button>
+            </Badge>
+          ))}
+        </div>
+      </div>
+      )}
       </div>
       <DeleteCardDialog
         open={isDeleteDialogOpen}
