@@ -17,6 +17,8 @@ import {
 } from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
 import { Badge } from "@/components/ui/badge";
+import useUserId from "@/hooks/useUserId";
+import useDeleteTagInBookmark from "@/hooks/deleteTagInBookmark";
 
 interface DeleteCardDialogProps {
   open: boolean;
@@ -61,6 +63,8 @@ export function BookmarkCardView({
   onDelete: () => void;
 }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const userId = useUserId();
+  const deleteTagInBookmark = useDeleteTagInBookmark(userId, bookmark.id);
   const hasTags = bookmark.tags.length > 0 && bookmark.tags[0] && Object.keys(bookmark.tags[0]).length > 0;
 
   const handleDelete = () => {
@@ -69,7 +73,7 @@ export function BookmarkCardView({
   };
 
   const handleDeleteTag = (tagId: string) => {
-    // Logic to delete tag will be implemented later
+    deleteTagInBookmark.mutate(tagId);
   };
 
 
@@ -121,7 +125,7 @@ export function BookmarkCardView({
                       >
                         <span className="mr-1 gap-x-2">{tag.name}</span>
                         <button 
-                          onClick={() => handleDeleteTag(tag.name)} 
+                          onClick={() => handleDeleteTag(tag.id)} 
                           className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
                         >
                           <X className="w-3 h-3 hover:text-red-500 transition-colors" />
