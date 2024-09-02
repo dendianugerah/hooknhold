@@ -183,6 +183,7 @@ export async function GET(
       });
     }
     bookmarksMap.get(bookmark.id)!.tags.push({
+      id: tag?.id as string,
       name: tag?.name as string,
       created_at: tag?.created_at as string,
     });

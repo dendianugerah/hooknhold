@@ -202,6 +202,20 @@ export async function deleteBookmark(userId: string, id: string) {
   }
 }
 
+export async function deleteTagInBookmark(userId: string, bookmarkId: string, tagId: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}/tag/${tagId}`, {
+      method: "DELETE",
+    })
+
+    const item = await response.json();
+
+    return item.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function deleteTag(userId: string, id: string) {
   try {
     const response = await fetch(`${API_BASE_URL}/${userId}/tag/${id}`, {

@@ -30,7 +30,7 @@ export interface BookmarkData {
   user_id: string;
   folder_id: string | null;
   data: Bookmark;
-  tags: Omit<Tag, "id" | "user_id">[];
+  tags: Omit<Tag, "user_id">[];
 }
 
 export interface FolderData {
