@@ -75,7 +75,7 @@ export default function Mind({ folderId }: MindProps) {
         <HeaderSection />
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-4 md:p-6 md:pt-2 lg:ml-[320px] xl:ml-[350px]">
-          <div className="flex flex-col md:flex-row items-start md:items-center py-2 md:justify-between">
+          <div className="flex md:flex-row items-start items-center py-2 justify-between">
             <div>
               <ControlSection
                 isCardView={isCardView}

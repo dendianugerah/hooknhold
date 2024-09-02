@@ -199,15 +199,9 @@ export function BookmarkListView({
             <ChevronRight className="w-4 h-4 ml-[2px] transition-transform duration-200 group-hover:translate-x-1 hover:font-bold" />
           </Link>
         </div>
-        <p className="text-gray-500">
-          {new Date(bookmark.data.created_at).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </p>
+
       </div>
-      <div className="flex flex-wrap items-center mt-2">
+      <div className="flex justify-between flex-wrap items-center mt-2">
       {hasTags && (
       <div className="flex items-center space-x-1">
         <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
@@ -232,6 +226,13 @@ export function BookmarkListView({
         </div>
       </div>
       )}
+      <p className="text-xs text-gray-500">
+        {new Date(bookmark.data.created_at).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </p>
       </div>
       <DeleteCardDialog
         open={isDeleteDialogOpen}
