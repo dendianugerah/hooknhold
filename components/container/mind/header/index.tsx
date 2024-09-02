@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { ChevronDownIcon, BookmarkIcon } from "@/components/icon";
+import { BookmarkIcon } from "@/components/icon";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import {
   Button,
   DropdownMenu,
@@ -13,19 +14,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 
-export default function HeaderSection() {
+interface HeaderSectionProps {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function HeaderSection({ isSidebarOpen, setIsSidebarOpen }: HeaderSectionProps) {
   const { data: session } = useSession();
 
   return (
-    <header className="flex h-14 items-center justify-between lg:ml-[320px] xl:ml-[350px] gap-4 border-b px-6 dark:bg-gray-800/40">
+    <header className="flex h-14 items-center justify-between lg:ml-[270px] xl:ml-[350px] gap-4 border-b px-6 dark:bg-gray-800/40 relative">
       <span className="flex items-center font-semibold gap-x-2 text-lg">
         <BookmarkIcon className="h-6 w-6" />
         Bookmarks
       </span>
-      <Button className="rounded-lg md:hidden">
-        <ChevronDownIcon className="w-4 h-4" />
+      <section className="flex item-center gap-4">
+
+      <button className="md:hidden p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+        <HamburgerMenuIcon className="w-4 h-4" />
         <span className="sr-only">Toggle sidebar</span>
-      </Button>
+      </button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -58,12 +66,13 @@ export default function HeaderSection() {
               onClick={() => {
                 signOut({ callbackUrl: "/" });
               }}
-            >
+              >
               Logout
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+              </section>
     </header>
   );
 }

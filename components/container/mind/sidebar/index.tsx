@@ -16,14 +16,12 @@ import {
 import { Hash } from "lucide-react";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useCallback, useContext, useState } from "react";
+import {useTags, useFolders, useDeleteFolder} from "@/hooks";
 import Link from "next/link";
 import DeleteFolder from "./deleteFolder";
 import CreateFolder from "./createFolder";
-import useUserId from "@/hooks/useUserId";
-import useFolders from "@/hooks/useFolder";
-import useDeleteFolder from "@/hooks/deleteFolder";
 import FolderMenu from "./folderMenu";
-import useTags from "@/hooks/useTags";
+import useUserId from "@/hooks/useUserId";
 import renameFolder from "@/hooks/renameFolder";
 
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
@@ -40,7 +38,7 @@ function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   );
 }
 
-export default function SidebarSection() {
+export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}) {
   const userId = useUserId();
   const deleteFolder = useDeleteFolder(userId);
   const editFolder = renameFolder(userId);
@@ -132,7 +130,9 @@ export default function SidebarSection() {
   );
 
   return (
-    <div className="hidden fixed h-full w-[320px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40">
+    <div className={`fixed h-full w-[270px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40 top-0 bg-white z-50 transition-transform duration-300 ${
+      isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+    } lg:translate-x-0`}>
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-14 items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="#">
