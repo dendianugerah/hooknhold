@@ -1,5 +1,5 @@
 "use client";
-import { SearchContext } from "../layout";
+import { SearchContext, UserContext } from "@/context";
 import { useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Option } from "@/components/ui/multiple-selector";
@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   MultipleSelector,
 } from "@/components/ui";
-import useUserId from "@/hooks/useUserId";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
 import { useCreateBookmark, useDeleteBookmark, useBookmarks, useTags, useFolders } from "@/hooks";
@@ -34,7 +33,7 @@ interface MindProps {
 }
 
 export default function Mind({ folderId }: MindProps) {
-  const userId = useUserId();
+  const { userId } = useContext(UserContext)
   const [url, setUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isCardView, setIsCardView] = useState(true);

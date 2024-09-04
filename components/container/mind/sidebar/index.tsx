@@ -14,15 +14,14 @@ import {
   FolderIcon,
 } from "@/components/icon";
 import { Hash } from "lucide-react";
-import { SearchContext } from "@/app/(dashboard)/layout";
 import { useCallback, useContext, useState } from "react";
 import { useTags, useFolders, useDeleteFolder } from "@/hooks";
 import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
 import Link from "next/link";
 import CreateFolder from "./createFolder";
 import FolderMenu from "./folderMenu";
-import useUserId from "@/hooks/useUserId";
 import renameFolder from "@/hooks/renameFolder";
+import { SearchContext, UserContext } from "@/context";
 
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   return (
@@ -39,7 +38,7 @@ function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
 }
 
 export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}) {
-  const userId = useUserId();
+  const { userId } = useContext(UserContext)
   const deleteFolder = useDeleteFolder(userId);
   const editFolder = renameFolder(userId);
   const [showCreateFolder, setShowCreateFolder] = useState(false);
