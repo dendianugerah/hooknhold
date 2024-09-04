@@ -35,6 +35,8 @@ function CreateFolder({
       if (e.key === "Enter" && folderName) {
         createFolder.mutate(folderName);
         setFolderName("");
+      } else if (e.key === "Escape") {
+        setShowCreateFolder(false)
       }
     },
     [folderName, createFolder]

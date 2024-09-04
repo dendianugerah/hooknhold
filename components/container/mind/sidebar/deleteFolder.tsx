@@ -8,6 +8,7 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
 } from "@/components/ui";
+import { useEffect } from "react";
 
 interface DeleteFolderProps {
   open: boolean;
@@ -16,6 +17,20 @@ interface DeleteFolderProps {
 }
 
 function DeleteFolder({ open, onClose, onDelete }: DeleteFolderProps) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && open) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, onClose])
+
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>

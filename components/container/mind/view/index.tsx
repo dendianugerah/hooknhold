@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -27,6 +27,20 @@ interface DeleteCardDialogProps {
 }
 
 function DeleteCardDialog({ open, onClose, onDelete }: DeleteCardDialogProps) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && open) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, onClose])
+
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>

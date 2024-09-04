@@ -39,7 +39,7 @@ function RenameFolder({
         if (e.key === "Enter" && newName.trim()) {
           onRename(folder.id, newName.trim());
           onCancel();
-        } else if (e.key == "Escape") {
+        } else if (e.key === "Escape") {
           onCancel();
         }
       },
