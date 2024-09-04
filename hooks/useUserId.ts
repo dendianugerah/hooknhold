@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useSession } from "next-auth/react";
 import { getUserId } from "@/app/utils/action";
 
 export default function useUserId() {
   const { data: session } = useSession();
-  const [userId, setUserId] = useState("");
 
-  useEffect(() => {
-    const fetchUserId = async () => {
+  const { data: userId } = useQuery(
+    ["userId", session?.user?.email],
+    () => {
       if (session?.user?.email) {
-        const id = await getUserId(session.user.email);
-        setUserId(id);
+        return getUserId(session.user.email);
       }
-    };
+      return null;
+    },
+    {
+      enabled: !!session?.user?.email,
+      staleTime: 1000 * 60 * 10, // 10 minutes
+    }
+  );
 
-    fetchUserId();
-  }, [session]);
-
-  return userId;
+  return userId as string;
 }

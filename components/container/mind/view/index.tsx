@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent, Badge } from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
@@ -30,6 +30,10 @@ export function BookmarkCardView({
     deleteTagInBookmark.mutate(tagId);
   };
 
+  const handleAddTag = () => {
+    // Logic to open tag selection dialog
+    console.log("Open tag selection dialog");
+  };
 
   return (
     <>
@@ -39,9 +43,14 @@ export function BookmarkCardView({
             <div className="mb-1">
               <h2 className=" flex items-center justify-between font-semibold line-clamp-2 text-lg">
                 {bookmark.data.title}
-                <button onClick={() => setIsDeleteDialogOpen(true)}>
-                  <X className="w-4 h-4 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all hover:text-red-500 transition-colors" />
-                </button>
+                <div className="space-x-1">
+                  <button onClick={handleAddTag}>
+                    <Plus className="w-5 h-5 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all hover:text-gray-900 transition-colors" />
+                  </button>
+                  <button onClick={() => setIsDeleteDialogOpen(true)}>
+                    <X className="w-5 h-5 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all hover:text-red-500 transition-colors" />
+                  </button>
+                </div>
               </h2>
               <div className="flex items-center">
                 <Link
@@ -175,7 +184,7 @@ export function BookmarkListView({
                 onClick={() => handleDeleteTag(tag.name)} 
                 className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
               >
-                <X className="w-3 h-3 hover:text-red-500 transition-colors" />
+                <X className="w-4 h-4 hover:text-red-500 transition-colors" />
               </button>
             </Badge>
           ))}
