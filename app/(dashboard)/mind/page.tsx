@@ -176,6 +176,7 @@ export default function Mind({ folderId }: MindProps) {
                   ) : (
                     <Button
                       type="submit"
+                      variant="custom_primary"
                       onClick={() => {
                         createBookmark.mutate(createBookmarkData, {
                           onSuccess: () => {

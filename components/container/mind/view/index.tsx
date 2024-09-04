@@ -42,12 +42,13 @@ function DeleteCardDialog({ open, onClose, onDelete }: DeleteCardDialogProps) {
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
           <AlertDialogAction
+            variant="destructive"
             onClick={() => {
               onDelete();
               onClose();
             }}
           >
-            Continue
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

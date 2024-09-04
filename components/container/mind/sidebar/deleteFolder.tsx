@@ -29,12 +29,13 @@ function DeleteFolder({ open, onClose, onDelete }: DeleteFolderProps) {
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
           <AlertDialogAction
+            variant="destructive"
             onClick={() => {
               onDelete();
               onClose();
             }}
           >
-            Continue
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
