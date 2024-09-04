@@ -58,9 +58,11 @@ import {
   AlertDialogTrigger,
   AlertDialogDescription,
 } from "./alert-dialog";
+import { Badge } from "./badge";
 
 export {
   Button,
+  Badge,
   Input,
   Card,
   CardTitle,

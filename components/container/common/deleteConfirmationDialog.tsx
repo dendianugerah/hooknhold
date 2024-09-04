@@ -10,13 +10,21 @@ import {
 } from "@/components/ui";
 import { useEffect } from "react";
 
-interface DeleteFolderProps {
+interface DeleteConfirmationDialogProps {
   open: boolean;
   onClose: () => void;
   onDelete: () => void;
+  title: string;
+  description: string;
 }
 
-function DeleteFolder({ open, onClose, onDelete }: DeleteFolderProps) {
+export function DeleteConfirmationDialog({ 
+  open, 
+  onClose, 
+  onDelete, 
+  title, 
+  description 
+}: DeleteConfirmationDialogProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && open) {
@@ -25,21 +33,15 @@ function DeleteFolder({ open, onClose, onDelete }: DeleteFolderProps) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [open, onClose])
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
 
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the
-            folder and all the bookmarks inside the folder.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
@@ -57,5 +59,3 @@ function DeleteFolder({ open, onClose, onDelete }: DeleteFolderProps) {
     </AlertDialog>
   );
 }
-
-export default DeleteFolder;

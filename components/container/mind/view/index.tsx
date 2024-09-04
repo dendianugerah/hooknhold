@@ -2,73 +2,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  AlertDialog,
-  AlertDialogTitle,
-  AlertDialogCancel,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-} from "@/components/ui";
+import { useState } from "react";
+import { Card, CardContent, Badge } from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
-import { Badge } from "@/components/ui/badge";
+import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
 import useUserId from "@/hooks/useUserId";
 import useDeleteTagInBookmark from "@/hooks/deleteTagInBookmark";
-
-interface DeleteCardDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onDelete: () => void;
-}
-
-function DeleteCardDialog({ open, onClose, onDelete }: DeleteCardDialogProps) {
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && open) {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [open, onClose])
-
-  return (
-    <AlertDialog open={open}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            Are you sure you want to delete this bookmark?
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the
-            bookmark.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            variant="destructive"
-            onClick={() => {
-              onDelete();
-              onClose();
-            }}
-          >
-            Delete
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
 
 export function BookmarkCardView({
   bookmark,
@@ -167,10 +106,12 @@ export function BookmarkCardView({
           </div>
         </CardContent>
       </Card>
-      <DeleteCardDialog
+      <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={handleDelete}
+        title="Are you sure you want to delete this bookmark?"
+        description="This action cannot be undone. This will permanently delete the bookmark."
       />
     </>
   );
@@ -249,10 +190,12 @@ export function BookmarkListView({
         })}
       </p>
       </div>
-      <DeleteCardDialog
+      <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={handleDelete}
+        title="Are you sure you want to delete this bookmark?"
+        description="This action cannot be undone. This will permanently delete the bookmark."
       />
     </div>
   );

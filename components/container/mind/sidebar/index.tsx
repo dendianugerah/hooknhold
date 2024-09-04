@@ -16,9 +16,9 @@ import {
 import { Hash } from "lucide-react";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useCallback, useContext, useState } from "react";
-import {useTags, useFolders, useDeleteFolder} from "@/hooks";
+import { useTags, useFolders, useDeleteFolder } from "@/hooks";
+import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
 import Link from "next/link";
-import DeleteFolder from "./deleteFolder";
 import CreateFolder from "./createFolder";
 import FolderMenu from "./folderMenu";
 import useUserId from "@/hooks/useUserId";
@@ -163,13 +163,15 @@ export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}
               />
             )}
 
-            <DeleteFolder
+            <DeleteConfirmationDialog
               open={showDeleteAlert}
               onClose={() => setShowDeleteAlert(false)}
               onDelete={() => {
                 deleteFolder.mutate(selectedFolderId);
                 setShowDeleteAlert(false);
               }}
+            title="Are you sure you want to delete this folder?"
+            description="This action cannot be undone. This will permanently delete the folder and all bookmarks inside it."
             />
 
             <Button
