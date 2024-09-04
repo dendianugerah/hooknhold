@@ -27,7 +27,13 @@ import {
 import useUserId from "@/hooks/useUserId";
 import ControlSection from "@/components/container/mind/control";
 import BookmarkSkeleton from "@/components/skeleton/bookmark-skeleton";
-import { useCreateBookmark, useDeleteBookmark, useBookmarks, useTags, useFolders } from "@/hooks";
+import {
+  useCreateBookmark,
+  useDeleteBookmark,
+  useBookmarks,
+  useTags,
+  useFolders,
+} from "@/hooks";
 
 interface MindProps {
   folderId?: string;
@@ -71,7 +77,7 @@ export default function Mind({ folderId }: MindProps) {
   return (
     <div className="flex w-full min-h-screen">
       <main className="flex-1 p-4 md:p-6 md:pt-2">
-        <div className="flex md:flex-row items-start items-center py-2 justify-between">
+        <div className="flex md:flex-row items-center py-2 justify-between">
           <div>
             <ControlSection
               isCardView={isCardView}
@@ -80,10 +86,7 @@ export default function Mind({ folderId }: MindProps) {
           </div>
           <div className="flex gap-x-2">
             {!isMindRoute && (
-              <Button
-                className="ml-auto shrink-0 rounded-md"
-                variant="outline"
-              >
+              <Button className="ml-auto shrink-0 rounded-md" variant="outline">
                 <ShareIcon className="w-4 h-4 mr-2" />
                 Share
               </Button>
