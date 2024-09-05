@@ -1,8 +1,8 @@
 import { v4 as uuid } from "uuid";
 import { NextRequest } from "next/server";
-import db, { folder, bookmark, tag, bookmark_tag } from "@/lib/database";
+import db, { folder, bookmark, bookmark_tag } from "@/lib/database";
 import { Response } from "@/app/utils/response";
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 
 export async function POST(
   req: NextRequest,
@@ -46,7 +46,7 @@ export async function GET(
         id: folder.id,
         name: folder.name,
       })
-      .from(folder)
+      .from(folder).orderBy(asc(folder.name))
       .where(eq(folder.user_id, userId));
 
     return Response(folders, 200, "Folders fetched successfully");
