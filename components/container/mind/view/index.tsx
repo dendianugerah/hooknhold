@@ -3,11 +3,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, Plus, X } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent, Badge } from "@/components/ui";
+import {
+  Card,
+  CardContent,
+  Badge,
+  MultipleSelector,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Button,
+} from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
 import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
+import { useTags } from "@/hooks";
 import useUserId from "@/hooks/useUserId";
 import useDeleteTagInBookmark from "@/hooks/deleteTagInBookmark";
+import { Option } from "@/components/ui/multiple-selector";
 
 export function BookmarkCardView({
   bookmark,
@@ -16,8 +27,11 @@ export function BookmarkCardView({
   bookmark: BookmarkData;
   onDelete: () => void;
 }) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const userId = useUserId();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isAddTagDialogOpen, setIsAddTagDialogOpen] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<Option[]>([]);
+  const { options } = useTags(userId);
   const deleteTagInBookmark = useDeleteTagInBookmark(userId, bookmark.id);
   const hasTags =
     bookmark.tags.length > 0 &&
@@ -99,13 +113,29 @@ export function BookmarkCardView({
                     </div>
                   </>
                 )}
-                <button
-                  onClick={handleAddTag}
-                  className="opacity-0 group-hover:opacity-100 flex items-center text-gray-400 hover:text-[#579DFF] text-xs font-semibold"
-                >
-                  <Plus className="w-3 h-3 mr-1" />
-                  {hasTags ? "Add more" : "Add tag"}
-                </button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="h-auto p-0 flex text-xs text-gray-400 hover:text-[#579DFF] opacity-0 group-hover:opacity-100">
+                      <Plus className="w-3 h-3 mr-1" />
+                      {hasTags ? "Add more" : "Add tag"}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className=" p-0 flex" align="start">
+                    <div className="p-4">
+                      <div className="flex items-center space-x-6 justify-between">
+                        <MultipleSelector
+                          placeholder="type to search tags..."
+                          defaultOptions={options}
+                          value={selectedTags}
+                          onChange={(value: Option[]) => setSelectedTags(value)}
+                        />
+                        <Button size="sm" variant="custom_primary">
+                          Save
+                        </Button>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
               <div className="flex items-center">
                 <Badge variant="secondary" className="text-gray-700">

@@ -27,3 +27,48 @@ export async function DELETE(
     return Response(null, 500, "An error occurred");
   }
 }
+
+export async function POST(
+  req: NextRequest,
+  query: { params: { userId: string; id: string } }
+) {
+  try {
+    const bookmarkId = query.params.id;
+    const body = await req.json();
+    let { tag_id } = body;
+
+    if (!Array.isArray(tag_id)) {
+      tag_id = [tag_id];
+    }
+
+    tag_id = tag_id.map((id: string) => id.replace(/[\[\]]/g, "").trim());
+
+    await db.transaction(async (tx) => {
+      for (const tagId of tag_id) {
+        // Check if the tag already exists for this bookmark
+        const existingTag = await tx
+          .select()
+          .from(bookmark_tag)
+          .where(
+            and(
+              eq(bookmark_tag.bookmark_id, bookmarkId),
+              eq(bookmark_tag.tag_id, tagId)
+            )
+          )
+          .limit(1);
+
+        // If the tag doesn't exist, insert it
+        if (existingTag.length === 0) {
+          await tx.insert(bookmark_tag).values({
+            bookmark_id: bookmarkId,
+            tag_id: tagId,
+          });
+        }
+      }
+    });
+
+    return Response(null, 200, "Bookmark tag created successfully");
+  } catch (error) {
+    return Response(null, 500, "An error occurred");
+  }
+}
