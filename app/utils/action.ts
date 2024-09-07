@@ -128,6 +128,32 @@ export async function addFolder(userId: string, name: string): Promise<void> {
   }
 }
 
+export async function createTagInBookmark(userId: string, bookmarkId: string, tagIds: string | string[]) {
+  try {
+
+    const body = {
+      tag_id: Array.isArray(tagIds) ? tagIds : [tagIds]
+    }
+
+    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (!response.ok) {
+      throw new Error("An error occurred while creating tag");
+    }
+
+    return response.json();
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getFolder(userId: string) {
   try {
     const response = await fetch(`${API_BASE_URL}/${userId}/folder`, {

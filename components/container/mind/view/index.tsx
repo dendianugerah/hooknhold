@@ -18,6 +18,7 @@ import { DeleteConfirmationDialog } from "@/components/container/common/deleteCo
 import { useTags } from "@/hooks";
 import useUserId from "@/hooks/useUserId";
 import useDeleteTagInBookmark from "@/hooks/deleteTagInBookmark";
+import useCreateTagInBookmark from "@/hooks/createTagInBookmark";
 import { Option } from "@/components/ui/multiple-selector";
 
 export function BookmarkCardView({
@@ -29,9 +30,10 @@ export function BookmarkCardView({
 }) {
   const userId = useUserId();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isAddTagDialogOpen, setIsAddTagDialogOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
   const { options } = useTags(userId);
+  const createTagInBookmark = useCreateTagInBookmark(userId, bookmark.id);
   const deleteTagInBookmark = useDeleteTagInBookmark(userId, bookmark.id);
   const hasTags =
     bookmark.tags.length > 0 &&
@@ -48,8 +50,18 @@ export function BookmarkCardView({
   };
 
   const handleAddTag = () => {
-    // Logic to open tag selection dialog
-    console.log("Open tag selection dialog");
+    if (selectedTags.length > 0) {
+      const tagIds = selectedTags.map(tag => tag.id).filter((id): id is string => id !== undefined);
+      createTagInBookmark.mutate(tagIds, {
+        onSuccess: () => {
+          setSelectedTags([]);
+          setIsPopoverOpen(false);
+        },
+        onError: (error) => {
+          console.error("Error adding tags:", error);
+        }
+      });
+    }
   };
 
   return (
@@ -113,7 +125,7 @@ export function BookmarkCardView({
                     </div>
                   </>
                 )}
-                <Popover>
+                <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
                     <button className="h-auto p-0 flex text-xs text-gray-400 hover:text-[#579DFF] opacity-0 group-hover:opacity-100">
                       <Plus className="w-3 h-3 mr-1" />
@@ -129,7 +141,7 @@ export function BookmarkCardView({
                           value={selectedTags}
                           onChange={(value: Option[]) => setSelectedTags(value)}
                         />
-                        <Button size="sm" variant="custom_primary">
+                        <Button size="sm" variant="custom_primary" onClick={handleAddTag} disabled={selectedTags.length === 0 || createTagInBookmark.isLoading}>
                           Save
                         </Button>
                       </div>
