@@ -35,10 +35,7 @@ export function BookmarkCardView({
   const { options } = useTags(userId);
   const createTagInBookmark = useCreateTagInBookmark(userId, bookmark.id);
   const deleteTagInBookmark = useDeleteTagInBookmark(userId, bookmark.id);
-  const hasTags =
-    bookmark.tags.length > 0 &&
-    bookmark.tags[0] &&
-    Object.keys(bookmark.tags[0]).length > 0;
+  const hasTags = bookmark.tags && bookmark.tags.length > 0;
 
   const handleDelete = () => {
     onDelete();
@@ -101,7 +98,7 @@ export function BookmarkCardView({
             </div>
             <footer className="flex flex-wrap items-center justify-between">
               <div className="flex items-center space-x-2">
-                {hasTags && (
+                {hasTags && bookmark.tags && (
                   <>
                     <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
                       Tags:
@@ -141,8 +138,14 @@ export function BookmarkCardView({
                           value={selectedTags}
                           onChange={(value: Option[]) => setSelectedTags(value)}
                         />
-                        <Button size="sm" variant="custom_primary" onClick={handleAddTag} disabled={selectedTags.length === 0 || createTagInBookmark.isLoading}>
-                          Save
+                        <Button 
+                          size="sm" 
+                          variant="custom_primary" 
+                          onClick={handleAddTag} 
+                          disabled={selectedTags.length === 0 || createTagInBookmark.isLoading}
+                          isLoading={createTagInBookmark.isLoading}
+                        >
+                          {createTagInBookmark.isLoading ? 'Saving...' : 'Save'}
                         </Button>
                       </div>
                     </div>
@@ -185,10 +188,7 @@ export function BookmarkListView({
   onDelete: () => void;
 }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const hasTags =
-    bookmark.tags.length > 0 &&
-    bookmark.tags[0] &&
-    Object.keys(bookmark.tags[0]).length > 0;
+  const hasTags = bookmark.tags && bookmark.tags.length > 0;
 
   const handleDelete = () => {
     onDelete();
@@ -220,7 +220,7 @@ export function BookmarkListView({
         </div>
       </div>
       <div className="flex justify-between flex-wrap items-center mt-2">
-        {hasTags && (
+        {hasTags && bookmark.tags && (
           <div className="flex items-center space-x-1">
             <span className="text-xs text-[#579DFF] font-semibold dark:text-gray-400">
               Tags:

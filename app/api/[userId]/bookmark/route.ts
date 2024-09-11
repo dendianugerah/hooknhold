@@ -182,14 +182,23 @@ export async function GET(
         tags: [],
       });
     }
-    bookmarksMap.get(bookmark.id)!.tags.push({
-      id: tag?.id as string,
-      name: tag?.name as string,
-      created_at: tag?.created_at as string,
-    });
+    const currentBookmark = bookmarksMap.get(bookmark.id)!;
+    if (tag && tag.id && tag.name && tag.created_at) {
+      if (!currentBookmark.tags) {
+        currentBookmark.tags = [];
+      }
+      currentBookmark.tags.push({
+        id: tag.id,
+        name: tag.name,
+        created_at: tag.created_at,
+      });
+    };
   });
 
-  bookmarks = Array.from(bookmarksMap.values());
+  bookmarks = Array.from(bookmarksMap.values()).map(bookmark => ({
+    ...bookmark,
+    tags: bookmark.tags && bookmark.tags.length > 0 ? bookmark.tags : undefined
+  }));
 
   return Response(bookmarks, 200, "Bookmark - GET Success");
 }
