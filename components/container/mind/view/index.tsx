@@ -124,7 +124,7 @@ export function BookmarkCardView({
                 )}
                 <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <button className="h-auto p-0 flex text-xs text-gray-400 hover:text-[#579DFF] opacity-0 group-hover:opacity-100">
+                    <button className="items-center h-auto p-0 flex text-xs text-gray-400 hover:text-[#579DFF] opacity-0 group-hover:opacity-100">
                       <Plus className="w-3 h-3 mr-1" />
                       {hasTags ? "Add more" : "Add tag"}
                     </button>
