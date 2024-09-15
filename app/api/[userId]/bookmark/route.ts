@@ -130,8 +130,8 @@ function withFolderId<T extends PgSelect>(qb: T, folderId: string) {
   return qb.where(sql`folder_id = ${folderId}`);
 }
 
-function withQuery<T extends PgSelect>(qb: T, search: string) {
-  return qb.where(sql`title ILIKE ${search} OR description ILIKE ${search}`);
+function withQuery<T extends PgSelect>(qb: T, search: string, userId: string) {
+  return qb.where(sql`(title ILIKE ${search} OR description ILIKE ${search}) AND bookmark.user_id = ${userId}`)
 }
 
 export async function GET(
@@ -149,7 +149,7 @@ export async function GET(
     .from(bookmark)
     .leftJoin(bookmark_tag, eq(bookmark.id, bookmark_tag.bookmark_id))
     .leftJoin(tag, eq(tag.id, bookmark_tag.tag_id))
-    .where(sql`bookmark.user_id = ${userId}`)
+    .where(eq(bookmark.user_id, userId))  
     .orderBy(desc(bookmark.created_at))
     .$dynamic();
 
@@ -158,7 +158,7 @@ export async function GET(
   }
 
   if (searchQuery) {
-    bookmarks = withQuery(bookmarks, `%${searchQuery}%`);
+    bookmarks = withQuery(bookmarks, `%${searchQuery}%`, userId);
   }
 
   const bookmarksMap: Map<string, BookmarkData> = new Map();
