@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, Plus, X } from "lucide-react";
+import { ChevronRight, Loader2, Plus, X } from "lucide-react";
 import { useState } from "react";
 import {
   Card,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
 import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
-import { useTags } from "@/hooks";
+import { useTagsNotInBookmark } from "@/hooks";
 import useUserId from "@/hooks/useUserId";
 import useDeleteTagInBookmark from "@/hooks/deleteTagInBookmark";
 import useCreateTagInBookmark from "@/hooks/createTagInBookmark";
@@ -29,10 +29,14 @@ export function BookmarkCardView({
   onDelete: () => void;
 }) {
   const userId = useUserId();
+  const { options, invalidateTagsQuery } = useTagsNotInBookmark(
+    userId,
+    bookmark.id
+  );
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeletingTag, setIsDeletingTag] = useState<string | null>(null);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
-  const { options } = useTags(userId);
   const createTagInBookmark = useCreateTagInBookmark(userId, bookmark.id);
   const deleteTagInBookmark = useDeleteTagInBookmark(userId, bookmark.id);
   const hasTags = bookmark.tags && bookmark.tags.length > 0;
@@ -43,20 +47,32 @@ export function BookmarkCardView({
   };
 
   const handleDeleteTag = (tagId: string) => {
-    deleteTagInBookmark.mutate(tagId);
+    setIsDeletingTag(tagId);
+    deleteTagInBookmark.mutate(tagId, {
+      onSuccess() {
+        invalidateTagsQuery();
+        setIsDeletingTag(null);
+      },
+      onError() {
+        setIsDeletingTag(null);
+      },
+    });
   };
 
   const handleAddTag = () => {
     if (selectedTags.length > 0) {
-      const tagIds = selectedTags.map(tag => tag.id).filter((id): id is string => id !== undefined);
+      const tagIds = selectedTags
+        .map((tag) => tag.id)
+        .filter((id): id is string => id !== undefined);
       createTagInBookmark.mutate(tagIds, {
         onSuccess: () => {
           setSelectedTags([]);
           setIsPopoverOpen(false);
+          invalidateTagsQuery();
         },
         onError: (error) => {
           console.error("Error adding tags:", error);
-        }
+        },
       });
     }
   };
@@ -113,9 +129,14 @@ export function BookmarkCardView({
                           <span className="mr-1">{tag.name}</span>
                           <button
                             onClick={() => handleDeleteTag(tag.id)}
+                            disabled={isDeletingTag === tag.id}
                             className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
                           >
-                            <X className="w-3 h-3 hover:text-red-500 transition-colors" />
+                            {isDeletingTag === tag.id ? (
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                            ) : (
+                              <X className="w-3 h-3 hover:text-red-500 transition-colors" />
+                            )}
                           </button>
                         </Badge>
                       ))}
@@ -129,23 +150,31 @@ export function BookmarkCardView({
                       {hasTags ? "Add more" : "Add tag"}
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent className=" p-0 flex" align="start">
-                    <div className="p-4">
-                      <div className="flex items-center space-x-6 justify-between">
-                        <MultipleSelector
-                          placeholder="type to search tags..."
-                          defaultOptions={options}
-                          value={selectedTags}
-                          onChange={(value: Option[]) => setSelectedTags(value)}
-                        />
-                        <Button 
-                          size="sm" 
-                          variant="custom_primary" 
-                          onClick={handleAddTag} 
-                          disabled={selectedTags.length === 0 || createTagInBookmark.isLoading}
+                  <PopoverContent className="p-0 flex" align="start">
+                    <div className="p-4 w-full">
+                      <div className="flex items-center space-x-2 justify-between">
+                        <div className="flex-grow">
+                          <MultipleSelector
+                            placeholder="type to search tags..."
+                            defaultOptions={options}
+                            value={selectedTags}
+                            onChange={(value: Option[]) =>
+                              setSelectedTags(value)
+                            }
+                          />
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="custom_primary"
+                          onClick={handleAddTag}
+                          disabled={
+                            selectedTags.length === 0 ||
+                            createTagInBookmark.isLoading
+                          }
                           isLoading={createTagInBookmark.isLoading}
+                          className="whitespace-nowrap ml-2"
                         >
-                          {createTagInBookmark.isLoading ? 'Saving...' : 'Save'}
+                          {createTagInBookmark.isLoading ? "Saving..." : "Save"}
                         </Button>
                       </div>
                     </div>
