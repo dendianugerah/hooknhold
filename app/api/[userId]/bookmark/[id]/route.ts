@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
-import db, { bookmark, bookmark_tag } from "@/lib/database";
+import db, { bookmark, bookmark_tag, tag } from "@/lib/database";
 import { Response } from "@/app/utils/response";
-import { and, eq } from "drizzle-orm";
+import { and, eq, not, notExists } from "drizzle-orm";
 
 export async function DELETE(
   req: NextRequest,
@@ -69,6 +69,45 @@ export async function POST(
 
     return Response(null, 200, "Bookmark tag created successfully");
   } catch (error) {
+    return Response(null, 500, "An error occurred");
+  }
+}
+
+// to get tags not associated with a bookmark
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { userId: string; id: string } }
+) {
+  try {
+    const { userId, id: bookmarkId } = params;
+
+    const tags = await db
+      .select({
+        id: tag.id,
+        name: tag.name,
+        created_at: tag.created_at,
+      })
+      .from(tag)
+      .where(
+        and(
+          eq(tag.user_id, userId),
+          notExists(
+            db
+              .select()
+              .from(bookmark_tag)
+              .where(
+                and(
+                  eq(bookmark_tag.tag_id, tag.id),
+                  eq(bookmark_tag.bookmark_id, bookmarkId)
+                )
+              )
+          )
+        )
+      )
+
+    return Response(tags, 200, "Unassociated tags fetched successfully");
+  } catch (error) {
+    console.error(error);
     return Response(null, 500, "An error occurred");
   }
 }

@@ -214,6 +214,20 @@ export async function getTag(userId: string) {
   }
 }
 
+export async function getTagNotInBookmark(userId: string, bookmarkId: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`, {
+      method: "GET",
+    });
+
+    const item = await response.json();
+
+    return item.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function deleteBookmark(userId: string, id: string) {
   try {
     const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${id}`, {
