@@ -7,4 +7,7 @@ export * from "./renameFolder"
 export * from "./useTags"
 export * from "./useUserId"
 export * from "./deleteFolder"
+
 export * from "./useTagNotInBookmark"
+export * from "./deleteTagInBookmark"
+export * from "./createTagInBookmark"

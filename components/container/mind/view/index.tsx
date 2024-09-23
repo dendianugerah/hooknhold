@@ -14,12 +14,10 @@ import {
   Button,
 } from "@/components/ui";
 import { BookmarkData } from "@/app/utils/definition";
-import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
-import { useTagsNotInBookmark } from "@/hooks";
-import useUserId from "@/hooks/useUserId";
-import useDeleteTagInBookmark from "@/hooks/deleteTagInBookmark";
-import useCreateTagInBookmark from "@/hooks/createTagInBookmark";
 import { Option } from "@/components/ui/multiple-selector";
+import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
+import { useTagsNotInBookmark, useDeleteTagInBookmark, useCreateTagInBookmark } from "@/hooks";
+import useUserId from "@/hooks/useUserId";
 
 export function BookmarkCardView({
   bookmark,
@@ -262,12 +260,6 @@ export function BookmarkListView({
                   className="text-gray-700 flex items-center transition-all duration-200 ease-in-out"
                 >
                   <span className="mr-1 gap-x-2">{tag.name}</span>
-                  <button
-                    onClick={() => handleDeleteTag(tag.name)}
-                    className="opacity-0 group-hover:opacity-100 w-0 group-hover:w-3 overflow-hidden transition-all duration-200 ease-in-out"
-                  >
-                    <X className="w-4 h-4 hover:text-red-500 transition-colors" />
-                  </button>
                 </Badge>
               ))}
             </div>
