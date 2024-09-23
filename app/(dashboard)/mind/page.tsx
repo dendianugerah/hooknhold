@@ -131,7 +131,7 @@ export default function Mind({ folderId }: MindProps) {
                         <div className="w-full">
                           <MultipleSelector
                             defaultOptions={options}
-                            placeholder="type to search tags..."
+                            placeholder="type to search or add tags..."
                             creatable
                             emptyIndicator={
                               <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
@@ -240,24 +240,28 @@ export default function Mind({ folderId }: MindProps) {
               <BookmarkSkeleton />
               <BookmarkSkeleton />
             </>
-          ) : (
-            bookmarks?.map((bookmark) => (
-              <>
-                {isCardView ? (
-                  <BookmarkCardView
-                    bookmark={bookmark}
-                    onDelete={() => deleteBookmark.mutate(bookmark.id)}
-                    key={bookmark.id}
-                  />
-                ) : (
-                  <BookmarkListView
-                    bookmark={bookmark}
-                    onDelete={() => deleteBookmark.mutate(bookmark.id)}
-                    key={bookmark.id}
-                  />
-                )}
-              </>
+          ) : bookmarks && bookmarks.length > 0 ? (
+            bookmarks.map((bookmark) => (
+              isCardView ? (
+                <BookmarkCardView
+                  bookmark={bookmark}
+                  onDelete={() => deleteBookmark.mutate(bookmark.id)}
+                  key={bookmark.id}
+                />
+              ) : (
+                <BookmarkListView
+                  bookmark={bookmark}
+                  onDelete={() => deleteBookmark.mutate(bookmark.id)}
+                  key={bookmark.id}
+                />
+              )
             ))
+          ) : (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-500 dark:text-gray-400">
+                No bookmarks available in this folder.
+              </p>
+            </div>
           )}
         </div>
       </main>
