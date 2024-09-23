@@ -149,7 +149,7 @@ export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}
               href="/mind"
             >
               <BookmarkIcon className="h-4 w-4" />
-              Bookmarks
+              All Bookmarks
             </Link>
 
             {renderFolderAccordion()}
