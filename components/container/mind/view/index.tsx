@@ -16,7 +16,11 @@ import {
 import { BookmarkData } from "@/app/utils/definition";
 import { Option } from "@/components/ui/multiple-selector";
 import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
-import { useTagsNotInBookmark, useDeleteTagInBookmark, useCreateTagInBookmark } from "@/hooks";
+import {
+  useTagsNotInBookmark,
+  useDeleteTagInBookmark,
+  useCreateTagInBookmark,
+} from "@/hooks";
 import useUserId from "@/hooks/useUserId";
 
 export function BookmarkCardView({
@@ -148,33 +152,29 @@ export function BookmarkCardView({
                       {hasTags ? "Add more" : "Add tag"}
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent className="p-0 flex" align="start">
-                    <div className="p-4 w-full">
-                      <div className="flex items-center space-x-2 justify-between">
-                        <div className="flex-grow">
-                          <MultipleSelector
-                            placeholder="type to search tags..."
-                            defaultOptions={options}
-                            value={selectedTags}
-                            onChange={(value: Option[]) =>
-                              setSelectedTags(value)
-                            }
-                          />
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="custom_primary"
-                          onClick={handleAddTag}
-                          disabled={
-                            selectedTags.length === 0 ||
-                            createTagInBookmark.isLoading
-                          }
-                          isLoading={createTagInBookmark.isLoading}
-                          className="whitespace-nowrap ml-2"
-                        >
-                          {createTagInBookmark.isLoading ? "Saving..." : "Save"}
-                        </Button>
-                      </div>
+                  <PopoverContent className="flex" align="start">
+                    <div className="flex items-center space-x-4 justify-between">
+                      <MultipleSelector
+                        placeholder="type to search tags..."
+                        defaultOptions={options}
+                        value={selectedTags}
+                        onChange={(value: Option[]) => setSelectedTags(value)}
+                      />
+                      <Button
+                        size="sm"
+                        variant="custom_primary"
+                        onClick={handleAddTag}
+                        disabled={
+                          selectedTags.length === 0 ||
+                          createTagInBookmark.isLoading
+                        }
+                        isLoading={createTagInBookmark.isLoading}
+                        className="whitespace-nowrap ml-2"
+                      >
+                        {createTagInBookmark.isLoading
+                          ? "Saving..."
+                          : "Save tag"}
+                      </Button>
                     </div>
                   </PopoverContent>
                 </Popover>

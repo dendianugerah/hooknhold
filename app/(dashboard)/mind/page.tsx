@@ -85,7 +85,7 @@ export default function Mind({ folderId }: MindProps) {
           </div>
           <div className="flex gap-x-2">
             {!isMindRoute && (
-              <Button className="ml-auto shrink-0 rounded-md" variant="outline">
+              <Button className="ml-auto shrink-0 rounded-md" variant="outline" disabled>
                 <ShareIcon className="w-4 h-4 mr-2" />
                 Share
               </Button>
