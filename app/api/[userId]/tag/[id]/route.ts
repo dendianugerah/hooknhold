@@ -25,3 +25,25 @@ export async function DELETE(
     return Response(null, 500, "An error occurred");
   }
 }
+
+export async function PUT(
+  req: NextRequest,
+  query: { params: { userId: string; id: string } }
+) {
+  try {
+    const userId = query.params.userId;
+    const tagId = query.params.id;
+    const body = await req.json();
+    const name = body.name;
+
+    await db
+      .update(tag)
+      .set({ name: name })
+      .where(and(eq(tag.id, tagId), eq(tag.user_id, userId)));
+
+    return Response(null, 200, "Tag updated successfully");
+  } catch (error) {
+    console.error(error);
+    return Response(null, 500, "An error occurred");
+  }
+}
