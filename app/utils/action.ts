@@ -128,27 +128,32 @@ export async function addFolder(userId: string, name: string): Promise<void> {
   }
 }
 
-export async function createTagInBookmark(userId: string, bookmarkId: string, tagIds: string | string[]) {
+export async function createTagInBookmark(
+  userId: string,
+  bookmarkId: string,
+  tagIds: string | string[]
+) {
   try {
-
     const body = {
-      tag_id: Array.isArray(tagIds) ? tagIds : [tagIds]
-    }
+      tag_id: Array.isArray(tagIds) ? tagIds : [tagIds],
+    };
 
-    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
+    const response = await fetch(
+      `${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("An error occurred while creating tag");
     }
 
     return response.json();
-
   } catch (error) {
     throw error;
   }
@@ -200,6 +205,24 @@ export async function editFolder(userId: string, id: string, name: string) {
   }
 }
 
+export async function editTag(userId: string, id: string, name: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/tag/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    const item = await response.json();
+
+    return item.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getTag(userId: string) {
   try {
     const response = await fetch(`${API_BASE_URL}/${userId}/tag`, {
@@ -216,9 +239,12 @@ export async function getTag(userId: string) {
 
 export async function getTagNotInBookmark(userId: string, bookmarkId: string) {
   try {
-    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`,
+      {
+        method: "GET",
+      }
+    );
 
     const item = await response.json();
 
@@ -242,11 +268,18 @@ export async function deleteBookmark(userId: string, id: string) {
   }
 }
 
-export async function deleteTagInBookmark(userId: string, bookmarkId: string, tagId: string) {
+export async function deleteTagInBookmark(
+  userId: string,
+  bookmarkId: string,
+  tagId: string
+) {
   try {
-    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}/tag/${tagId}`, {
-      method: "DELETE",
-    })
+    const response = await fetch(
+      `${API_BASE_URL}/${userId}/bookmark/${bookmarkId}/tag/${tagId}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     const item = await response.json();
 
