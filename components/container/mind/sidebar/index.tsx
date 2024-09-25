@@ -16,13 +16,19 @@ import {
 import { Hash } from "lucide-react";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useCallback, useContext, useState } from "react";
-import { useTags, useFolders, useDeleteFolder } from "@/hooks";
+import {
+  useTags,
+  useFolders,
+  useRenameTag,
+  useDeleteFolder,
+  useRenameFolder,
+  useDeleteTag,
+} from "@/hooks";
 import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
 import Link from "next/link";
 import CreateFolder from "./createFolder";
-import FolderMenu from "./folderMenu";
 import useUserId from "@/hooks/useUserId";
-import renameFolder from "@/hooks/renameFolder";
+import MenuItem from "./menuItem";
 
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   return (
@@ -38,29 +44,51 @@ function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   );
 }
 
-export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}) {
+export default function SidebarSection({
+  isSidebarOpen,
+}: {
+  isSidebarOpen: boolean;
+}) {
   const userId = useUserId();
   const deleteFolder = useDeleteFolder(userId);
-  const editFolder = renameFolder(userId);
+  const deleteTag = useDeleteTag(userId);
+  const editFolder = useRenameFolder(userId);
+  const editTag = useRenameTag(userId);
   const [showCreateFolder, setShowCreateFolder] = useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [showDeleteFolderAlert, setShowDeleteFolderAlert] = useState(false);
+  const [showDeleteTagAlert, setShowDeleteTagAlert] = useState(false);
   const [editFolderId, setEditFolderId] = useState<string | null>(null);
+  const [editTagId, setEditTagId] = useState<string | null>(null);
   const [selectedFolderId, setSelectedFolderId] = useState("");
+  const [selectedTagId, setSelectedTagId] = useState("");
   const { setSearch } = useContext(SearchContext);
   const { folders } = useFolders(userId);
   const { options: tags } = useTags(userId);
 
-  const handleDeleteClick = useCallback((folderId: string) => {
+  const handleDeleteFolderClick = useCallback((folderId: string) => {
     setSelectedFolderId(folderId);
-    setShowDeleteAlert(true);
+    setShowDeleteFolderAlert(true);
   }, []);
 
-  const handleRename = useCallback(
+  const handleDeleteTagClick = useCallback((tagId: string) => {
+    setSelectedTagId(tagId);
+    setShowDeleteTagAlert(true);
+  }, []);
+
+  const handleFolderRename = useCallback(
     (folderId: string, newName: string) => {
       editFolder.mutate({ folderId, newName });
       setEditFolderId(null);
     },
     [editFolder]
+  );
+
+  const handleTagRename = useCallback(
+    (tagId: string, newName: string) => {
+      editTag.mutate({ tagId, newName });
+      setEditTagId(null);
+    },
+    [editTag]
   );
 
   const handleCreateFolderClick = useCallback(() => {
@@ -71,68 +99,69 @@ export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}
     }
   }, []);
 
-  const renderFolderAccordion = () => (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="folder">
-        {folders.length > 0 && (
-          <AccordionTrigger
-            className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-            id="folderAccordion"
-          >
-            <span className="flex gap-3 items-center">
-              <FolderIcon className="h-4 w-4 transition-none" />
-              Folder
-            </span>
-          </AccordionTrigger>
-        )}
-        <AccordionContent>
-          <div className="overflow-y-auto max-h-96 ml-3">
-            <FolderMenu
-              folders={folders}
-              handleDeleteClick={handleDeleteClick}
-              handleRenameClick={setEditFolderId}
-              editingFolder={editFolderId}
-              onRename={handleRename}
-            />
-            {folders.length > 0 && showCreateFolder && (
-              <CreateFolder
-                userId={userId}
-                showCreateFolder={showCreateFolder}
-                setShowCreateFolder={setShowCreateFolder}
-              />
-            )}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
+  const renderAccordion = (type: "folder" | "tag") => {
+    const items =
+      type === "folder"
+        ? folders
+        : tags.map((tag) => ({ id: tag.id, name: tag.label }));
+    const icon =
+      type === "folder" ? (
+        <FolderIcon className="h-4 w-4 transition-none" />
+      ) : (
+        <Hash className="h-4 w-4 transition-none" />
+      );
+    const title = type === "folder" ? "Folder" : "Tag";
+    const handleDelete =
+      type === "folder" ? handleDeleteFolderClick : handleDeleteTagClick;
+    const handleRename =
+      type === "folder" ? handleFolderRename : handleTagRename;
+    const editingItem = type === "folder" ? editFolderId : editTagId;
+    const setEditingItem = type === "folder" ? setEditFolderId : setEditTagId;
 
-  const renderTagAccordion = () => (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-1">
-        {tags.length > 0 && (
-          <>
-            <AccordionTrigger className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50">
+    return (
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value={type}>
+          {items.length > 0 && (
+            <AccordionTrigger
+              className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+              id={`${type}Accordion`}
+            >
               <span className="flex gap-3 items-center">
-                <Hash className="h-4 w-4 transition-none" />
-                Tag
+                {icon}
+                {title}
               </span>
             </AccordionTrigger>
-            <AccordionContent className="overflow-y-auto max-h-96 ml-7">
-              {tags.map((tag) => (
-                <div key={tag.id}>{tag.label}</div>
-              ))}
-            </AccordionContent>
-          </>
-        )}
-      </AccordionItem>
-    </Accordion>
-  );
+          )}
+          <AccordionContent>
+            <div className="overflow-y-auto max-h-96 ml-3">
+              <MenuItem
+                items={items}
+                handleDeleteClick={handleDelete}
+                handleRenameClick={setEditingItem}
+                editingItem={editingItem}
+                onRename={handleRename}
+                type={type}
+              />
+              {type === "folder" && folders.length > 0 && showCreateFolder && (
+                <CreateFolder
+                  userId={userId}
+                  showCreateFolder={showCreateFolder}
+                  setShowCreateFolder={setShowCreateFolder}
+                />
+              )}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    );
+  };
 
   return (
-    <div className={`fixed h-full w-[270px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40 top-0 bg-white z-50 transition-transform duration-300 ${
-      isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-    } lg:translate-x-0`}>
+    <div
+      className={`fixed h-full w-[270px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40 top-0 bg-white z-50 transition-transform duration-300 ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0`}
+    >
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-14 items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="#">
@@ -152,8 +181,8 @@ export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}
               All Bookmarks
             </Link>
 
-            {renderFolderAccordion()}
-            {renderTagAccordion()}
+            {renderAccordion("folder")}
+            {renderAccordion("tag")}
 
             {folders.length === 0 && showCreateFolder && (
               <CreateFolder
@@ -164,14 +193,25 @@ export default function SidebarSection({isSidebarOpen}: {isSidebarOpen: boolean}
             )}
 
             <DeleteConfirmationDialog
-              open={showDeleteAlert}
-              onClose={() => setShowDeleteAlert(false)}
+              open={showDeleteFolderAlert}
+              onClose={() => setShowDeleteFolderAlert(false)}
               onDelete={() => {
                 deleteFolder.mutate(selectedFolderId);
-                setShowDeleteAlert(false);
+                setShowDeleteFolderAlert(false);
               }}
-            title="Are you sure you want to delete this folder?"
-            description="This action cannot be undone. This will permanently delete the folder and all bookmarks inside it."
+              title="Are you sure you want to delete this folder?"
+              description="This action cannot be undone. This will permanently delete the folder and all bookmarks inside it."
+            />
+
+            <DeleteConfirmationDialog
+              open={showDeleteTagAlert}
+              onClose={() => setShowDeleteTagAlert(false)}
+              onDelete={() => {
+                deleteTag.mutate(selectedTagId);
+                setShowDeleteTagAlert(false);
+              }}
+              title="Are you sure you want to delete this tag?"
+              description="This action cannot be undone. This will permanently delete the tag from all bookmarks."
             />
 
             <Button

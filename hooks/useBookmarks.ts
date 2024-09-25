@@ -8,7 +8,7 @@ export const useBookmarks = (
   query?: string
 ) => {
   const { data = [], isLoading } = useQuery<BookmarkData[]>({
-    queryKey: ["bookmarkData", userId, folderId, query],
+    queryKey: ["bookmarks", userId, folderId, query],
     queryFn: () => getBookmark(userId, folderId, query),
     enabled: !!userId,
   });

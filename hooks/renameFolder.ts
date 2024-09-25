@@ -1,7 +1,11 @@
 import { editFolder } from "@/app/utils/action";
+import { queryKeys } from "@/utils/queryKeys";
 import { useMutation, useQueryClient } from "react-query";
 
-const renameFolder = (userId: string, onSuccessCallback = () => {}) => {
+export const useRenameFolder = (
+  userId: string,
+  onSuccessCallback = () => {}
+) => {
   const queryClient = useQueryClient();
 
   const renameFolderMutation = useMutation({
@@ -16,9 +20,7 @@ const renameFolder = (userId: string, onSuccessCallback = () => {}) => {
       console.error("Error editing folder:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["folderData", userId], {
-        refetchInactive: true,
-      });
+      queryClient.invalidateQueries(queryKeys.folders(userId));
       onSuccessCallback();
     },
   });
@@ -26,4 +28,4 @@ const renameFolder = (userId: string, onSuccessCallback = () => {}) => {
   return renameFolderMutation;
 };
 
-export default renameFolder;
+export default useRenameFolder;

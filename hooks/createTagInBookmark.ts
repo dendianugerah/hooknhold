@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { createTagInBookmark } from "@/app/utils/action";
+import { queryKeys } from "@/utils/queryKeys";
 
 export const useCreateTagInBookmark = (
     userId: string,
@@ -11,7 +12,7 @@ export const useCreateTagInBookmark = (
     const createTagInBookmarkMutation = useMutation({
         mutationFn: (tagIds: string | string[]) => createTagInBookmark(userId, bookmarkId, tagIds),
         onSuccess: () => {
-            queryClient.invalidateQueries(["bookmarkData", userId]);
+            queryClient.invalidateQueries(queryKeys.bookmarks(userId));
             onSuccessCallback();
         },
         onError: (error) => {

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { deleteTag } from "@/app/utils/action";
+import { queryKeys } from '@/utils/queryKeys';
 
 export const useDeleteTag = (userId: string) => {
   const queryClient = useQueryClient();
@@ -7,10 +8,11 @@ export const useDeleteTag = (userId: string) => {
   const deleteTagMutation = useMutation({
     mutationFn: (tagId: string) => deleteTag(userId, tagId),
     onError: (error) => {
-      console.error("Error deleting folder:", error);
+      console.error("Error deleting tag:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["tagData", userId]); // tagData is the key for the query, refer to useTags.ts
+      queryClient.invalidateQueries(queryKeys.tags(userId));
+      queryClient.invalidateQueries(queryKeys.bookmarks(userId));
     },
   });
 

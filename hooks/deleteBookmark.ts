@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { deleteBookmark } from "@/app/utils/action";
+import { queryKeys } from "@/utils/queryKeys";
 
 export const useDeleteBookmark = (
   userId: string,
@@ -13,7 +14,7 @@ export const useDeleteBookmark = (
       console.error("Error deleting folder:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["bookmarkData", userId]); // bookmarkData is the key for the query, refer to useBookmarks.ts
+      queryClient.invalidateQueries(queryKeys.bookmarks(userId));
       onSuccessCallback();
     },
   });

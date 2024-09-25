@@ -4,7 +4,7 @@ import { Option } from "@/components/ui/multiple-selector";
 
 export const useTags = (userId: string) => {
   const { data = [], isLoading } = useQuery<Option[]>({
-    queryKey: ["tagData", userId],
+    queryKey: ["tags", userId],
     queryFn: () => getTag(userId),
     enabled: !!userId,
   });

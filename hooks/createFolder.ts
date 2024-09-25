@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { addFolder } from "@/app/utils/action";
+import { queryKeys } from "@/utils/queryKeys";
 
 export const useCreateFolder = (
   userId: string,
@@ -13,9 +14,7 @@ export const useCreateFolder = (
       console.error("Error creating folder:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["folderData", userId], {
-        refetchInactive: true,
-      }); // folderData is the key for the query, refer to useFolders.ts
+      queryClient.invalidateQueries(queryKeys.folders(userId));
       onSuccessCallback();
     },
   });

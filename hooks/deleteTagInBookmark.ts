@@ -1,4 +1,5 @@
 import { deleteTagInBookmark } from "@/app/utils/action";
+import { queryKeys } from "@/utils/queryKeys";
 import { useMutation, useQueryClient } from "react-query";
 
 export const useDeleteTagInBookmark = (userId: string, bookmarkId: string) => {
@@ -10,7 +11,7 @@ export const useDeleteTagInBookmark = (userId: string, bookmarkId: string) => {
             console.error("Error deleting tag:", error);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(["bookmarkData", userId]);
+            queryClient.invalidateQueries(queryKeys.bookmarks(userId));
         },
     })
 

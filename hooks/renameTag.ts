@@ -1,7 +1,8 @@
 import { editTag } from "@/app/utils/action";
+import { queryKeys } from '@/utils/queryKeys';
 import { useMutation, useQueryClient } from "react-query";
 
-const renameTag = (userId: string, onSuccessCallback = () => {}) => {
+export const useRenameTag = (userId: string, onSuccessCallback = () => {}) => {
   const queryClient = useQueryClient();
 
   const renameFolderMutation = useMutation({
@@ -11,7 +12,8 @@ const renameTag = (userId: string, onSuccessCallback = () => {}) => {
       console.error("Error editing folder:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries("tags");
+      queryClient.invalidateQueries(queryKeys.tags(userId));
+      queryClient.invalidateQueries(queryKeys.bookmarks(userId));
       onSuccessCallback();
     },
   });
@@ -19,4 +21,4 @@ const renameTag = (userId: string, onSuccessCallback = () => {}) => {
   return renameFolderMutation;
 };
 
-export default renameTag;
+export default useRenameTag;
