@@ -53,41 +53,41 @@ export default function BookmarkRecommendation({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[90%] md:max-w-[500px] p-4 sm:p-6">
+      <DialogContent className="p-5 sm:p-6 max-w-xl w-full">
         <DialogHeader className="space-y-2">
-          <DialogTitle className="text-lg sm:text-xl font-semibold">
+          <DialogTitle className="text-xl sm:text-2xl font-semibold">
             Recommended Websites
           </DialogTitle>
-          <DialogDescription className="text-xs sm:text-sm text-gray-500">
+          <DialogDescription className="text-sm text-gray-500">
             Based on your bookmarks and browsing history
           </DialogDescription>
         </DialogHeader>
-        <div className="py-2 sm:py-4">
+        <div className="py-3 sm:py-4">
           {isGeneratingRecommendations ? (
-            <div className="flex flex-col items-center justify-center py-8 space-y-2">
-              <LoadingCircleIcon className="w-8 h-8 animate-spin text-primary" />
+            <div className="flex flex-col items-center justify-center py-10 space-y-2">
+              <LoadingCircleIcon className="w-10 h-10 animate-spin text-primary" />
               <p className="text-sm text-gray-500">
                 Generating recommendations...
               </p>
             </div>
           ) : (
-            <div className="space-y-3 sm:space-y-4 max-h-[50vh] overflow-y-auto">
+            <div className="space-y-3 sm:space-y-4 max-h-[55vh] overflow-y-auto">
               {recommendations.length > 0 ? (
                 recommendations.map((url, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between py-2 sm:py-3 border-b last:border-b-0"
                   >
-                    <div className="flex-grow mr-2 sm:mr-4">
+                    <div className="flex-grow mr-3 sm:mr-4">
                       <a
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline text-xs sm:text-sm font-medium truncate block"
+                        className="text-blue-600 hover:underline text-sm font-medium truncate block"
                       >
                         {url}
                       </a>
-                      <p className="text-[10px] sm:text-xs text-gray-500 mt-1 truncate">
+                      <p className="text-xs text-gray-500 mt-1 truncate">
                         Recommended based on your interests
                       </p>
                     </div>
@@ -106,10 +106,13 @@ export default function BookmarkRecommendation({
                             disabled={bookmarkedRecommendations.includes(url)}
                           >
                             {bookmarkedRecommendations.includes(url) ? (
-                              <CheckIcon className="w-3 h-3" />
+                              <CheckIcon className="w-3 h-3 mr-1" />
                             ) : (
-                              <PlusIcon className="w-3 h-3" />
+                              <PlusIcon className="w-3 h-3 mr-1" />
                             )}
+                            {bookmarkedRecommendations.includes(url)
+                              ? "Saved"
+                              : "Add"}
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -122,7 +125,7 @@ export default function BookmarkRecommendation({
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8">
+                <div className="text-center py-10">
                   <p className="text-sm text-gray-500">
                     No recommendations available.
                   </p>
@@ -135,25 +138,25 @@ export default function BookmarkRecommendation({
             </div>
           )}
         </div>
-        <DialogFooter className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+        <DialogFooter className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0 mt-3">
           <Button
             variant="outline"
             size="sm"
-            className="w-full sm:w-auto text-xs px-2 py-1 h-8"
+            className="w-full sm:w-auto text-xs px-3 py-1"
+            onClick={() => setIsOpen(false)}
+          >
+            <XIcon className="w-3 h-3 mr-1" />
+            Close
+          </Button>
+          <Button
+            variant="custom_primary"
+            size="sm"
+            className="w-full sm:w-auto text-xs px-3 py-1"
             onClick={() => generateRecommendations()}
             disabled={isGeneratingRecommendations}
           >
-            <SparklesIcon className="w-3 h-3 mr-1 sm:mr-2" />
+            <SparklesIcon className="w-3 h-3 mr-1" />
             Refresh
-          </Button>
-          <Button
-            variant="default"
-            size="sm"
-            className="w-full sm:w-auto text-xs px-2 py-1 h-8"
-            onClick={() => setIsOpen(false)}
-          >
-            <XIcon className="w-3 h-3 mr-1 sm:mr-2" />
-            Close
           </Button>
         </DialogFooter>
       </DialogContent>
