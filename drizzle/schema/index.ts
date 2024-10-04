@@ -3,8 +3,8 @@ import {
   uuid,
   varchar,
   time,
-  jsonb,
   timestamp,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -33,12 +33,10 @@ export const folder = pgTable("folder", {
   id: uuid("id").primaryKey(),
   user_id: uuid("user_id").references(() => user.id),
   name: varchar("name", { length: 255 }),
-  is_public: varchar("is_public").default("false"), // Indicates if the folder is public or private
-  readonly: varchar("readonly").default("false"), // Indicates if the folder is readonly
-  shared_with: jsonb("shared_white").default([]), // List of user that the folder is shared with
-  created_at: time("created_at", { withTimezone: true }).defaultNow(),
-  updated_at: time("updated_at", { withTimezone: true }).defaultNow(),
-  deleted_at: time("deleted_at", {}),
+  is_public: boolean("is_public").default(false),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  deleted_at: timestamp("deleted_at", { withTimezone: true }),
 });
 
 export const tag = pgTable("tag", {
@@ -51,4 +49,13 @@ export const tag = pgTable("tag", {
 export const bookmark_tag = pgTable("bookmark_tag", {
   bookmark_id: uuid("bookmark_id").references(() => bookmark.id),
   tag_id: uuid("tag_id").references(() => tag.id),
+});
+
+export const folder_share = pgTable("folder_share", {
+  id: uuid("id").primaryKey(),
+  folder_id: uuid("folder_id").references(() => folder.id),
+  shared_with_user_id: uuid("shared_with_user_id").references(() => user.id),
+  permission: varchar("permission", { length: 20 }).default("view"),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });

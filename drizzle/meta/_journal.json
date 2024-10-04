@@ -1,13 +1,1 @@
-{
-  "version": "5",
-  "dialect": "pg",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1728032944513,
-      "tag": "0000_real_quasimodo",
-      "breakpoints": true
-    }
-  ]
-}
+{"version":"5","dialect":"pg","entries":[{"idx":0,"version":"5","when":1728032944513,"tag":"0000_real_quasimodo","breakpoints":true}]}
