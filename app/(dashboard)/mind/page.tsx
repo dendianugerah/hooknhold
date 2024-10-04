@@ -23,6 +23,9 @@ import {
   SelectContent,
   SelectTrigger,
   MultipleSelector,
+  DialogHeader,
+  DialogDescription,
+  DialogTitle,
 } from "@/components/ui";
 import useUserId from "@/hooks/useUserId";
 import ControlSection from "@/components/container/mind/control";
@@ -34,6 +37,10 @@ import {
   useTags,
   useFolders,
 } from "@/hooks";
+import { SparklesIcon, ExternalLinkIcon } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { CheckIcon } from "lucide-react";
 
 interface MindProps {
   folderId?: string;
@@ -48,6 +55,10 @@ export default function Mind({ folderId }: MindProps) {
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
   const [selectedFolderId, setSelectedFolderId] = useState("");
   const [selectedFolderName, setSelectedFolderName] = useState("Select");
+  const [isRecommendationsOpen, setIsRecommendationsOpen] = useState(false);
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [isGeneratingRecommendations, setIsGeneratingRecommendations] = useState(false);
+  const [bookmarkedRecommendations, setBookmarkedRecommendations] = useState<string[]>([]);
 
   const { options } = useTags(userId);
   const { folders } = useFolders(userId);
@@ -73,15 +84,45 @@ export default function Mind({ folderId }: MindProps) {
   const pathname = usePathname();
   const isMindRoute = pathname === "/mind";
 
+  const generateRecommendations = async () => {
+    setIsGeneratingRecommendations(true);
+    // TODO: Implement AI-based recommendation generation
+    // For now, we'll use dummy data
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setRecommendations([
+      'https://example.com/recommended1',
+      'https://example.com/recommended2',
+      'https://example.com/recommended3',
+    ]);
+    setIsGeneratingRecommendations(false);
+  };
+
+  const handleAddBookmark = async (url: string) => {
+    setBookmarkedRecommendations([...bookmarkedRecommendations, url]);
+    // TODO: Implement actual bookmark creation logic
+    await createBookmark.mutateAsync({ url });
+  };
+
   return (
     <div className="flex w-full min-h-screen">
       <main className="flex-1 p-4 md:p-6 md:pt-2">
         <div className="flex md:flex-row items-center py-2 justify-between">
-          <div>
+          <div className="flex items-center space-x-4">
             <ControlSection
               isCardView={isCardView}
               setIsCardView={setIsCardView}
             />
+            <Button
+              variant="outline"
+              className="rounded-md"
+              onClick={() => {
+                setIsRecommendationsOpen(true);
+                generateRecommendations();
+              }}
+            >
+              <SparklesIcon className="w-4 h-4 mr-2" />
+              Get Recommendations
+            </Button>
           </div>
           <div className="flex gap-x-2">
             {!isMindRoute && (
@@ -264,6 +305,97 @@ export default function Mind({ folderId }: MindProps) {
             </div>
           )}
         </div>
+
+        {/* Improved Recommendations Dialog */}
+        <Dialog open={isRecommendationsOpen} onOpenChange={setIsRecommendationsOpen}>
+          <DialogContent className="sm:max-w-[500px] p-6">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold">Recommended Websites</DialogTitle>
+              <DialogDescription className="text-sm text-gray-500">
+                Based on your bookmarks and browsing history
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              {isGeneratingRecommendations ? (
+                <div className="flex flex-col items-center justify-center py-8 space-y-2">
+                  <LoadingCircleIcon className="w-8 h-8 animate-spin text-primary" />
+                  <p className="text-sm text-gray-500">Generating recommendations...</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {recommendations.length > 0 ? (
+                    recommendations.map((url, index) => (
+                      <div key={index} className="flex items-center justify-between py-3 border-b last:border-b-0">
+                        <div className="flex-grow mr-4">
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline text-sm font-medium truncate block"
+                          >
+                            {url}
+                          </a>
+                          <p className="text-xs text-gray-500 mt-1 truncate">
+                            {/* You can add a brief description or reason for recommendation here */}
+                            Recommended based on your interests
+                          </p>
+                        </div>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant={bookmarkedRecommendations.includes(url) ? "secondary" : "outline"}
+                                size="sm"
+                                onClick={() => handleAddBookmark(url)}
+                                disabled={bookmarkedRecommendations.includes(url)}
+                              >
+                                {bookmarkedRecommendations.includes(url) ? (
+                                  <>
+                                    <CheckIcon className="w-4 h-4 mr-1" />
+                                    Saved
+                                  </>
+                                ) : (
+                                  <>
+                                    <PlusIcon className="w-4 h-4 mr-1" />
+                                    Save
+                                  </>
+                                )}
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              {bookmarkedRecommendations.includes(url) 
+                                ? 'Bookmark saved' 
+                                : 'Add to bookmarks'}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-sm text-gray-500">No recommendations available.</p>
+                      <p className="text-xs text-gray-400 mt-2">Try refreshing or add more bookmarks to improve recommendations.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <DialogFooter className="flex justify-between items-center">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => generateRecommendations()}
+                disabled={isGeneratingRecommendations}
+              >
+                <SparklesIcon className="w-4 h-4 mr-2" />
+                Refresh Recommendations
+              </Button>
+              <Button variant="default" size="sm" onClick={() => setIsRecommendationsOpen(false)}>
+                Close
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
