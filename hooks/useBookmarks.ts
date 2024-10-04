@@ -1,7 +1,6 @@
 import { useQuery } from "react-query";
 import { getBookmark } from "@/app/utils/action";
 import { BookmarkData } from "@/app/utils/definition";
-import { queryKeys } from "@/utils/queryKeys";
 
 export const useBookmarks = (
   userId: string,
@@ -9,7 +8,7 @@ export const useBookmarks = (
   query?: string
 ) => {
   const { data = [], isLoading } = useQuery<BookmarkData[]>({
-    queryKey: queryKeys.bookmarks(userId),
+    queryKey: ["bookmarks", userId, folderId, query],
     queryFn: () => getBookmark(userId, folderId, query),
     enabled: !!userId,
   });
