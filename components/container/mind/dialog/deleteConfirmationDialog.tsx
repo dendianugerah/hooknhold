@@ -18,22 +18,22 @@ interface DeleteConfirmationDialogProps {
   description: string;
 }
 
-export function DeleteConfirmationDialog({ 
-  open, 
-  onClose, 
-  onDelete, 
-  title, 
-  description 
+export function DeleteConfirmationDialog({
+  open,
+  onClose,
+  onDelete,
+  title,
+  description,
 }: DeleteConfirmationDialogProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && open) {
+      if (event.key === "Escape" && open) {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
   return (

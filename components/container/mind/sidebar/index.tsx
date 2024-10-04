@@ -24,7 +24,7 @@ import {
   useRenameFolder,
   useDeleteTag,
 } from "@/hooks";
-import { DeleteConfirmationDialog } from "@/components/container/common/deleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/deleteConfirmationDialog";
 import Link from "next/link";
 import CreateFolder from "./createFolder";
 import useUserId from "@/hooks/useUserId";
