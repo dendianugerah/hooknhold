@@ -14,7 +14,7 @@ import {
   Button,
 } from "@/components/ui";
 import { Option } from "@/components/ui/multiple-selector";
-import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/deleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/DeleteConfirmationDialog";
 import {
   useTagsNotInBookmark,
   useDeleteTagInBookmark,

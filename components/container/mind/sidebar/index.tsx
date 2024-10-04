@@ -24,11 +24,11 @@ import {
   useRenameFolder,
   useDeleteTag,
 } from "@/hooks";
-import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/deleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/DeleteConfirmationDialog";
 import Link from "next/link";
-import CreateFolder from "./createFolder";
 import useUserId from "@/hooks/useUserId";
-import MenuItem from "./menuItem";
+import CreateFolder from "./CreateFolder";
+import MenuItem from "./MenuItem";
 
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   return (
@@ -44,11 +44,7 @@ function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   );
 }
 
-export default function SidebarSection({
-  isSidebarOpen,
-}: {
-  isSidebarOpen: boolean;
-}) {
+export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
   const userId = useUserId();
   const deleteFolder = useDeleteFolder(userId);
   const deleteTag = useDeleteTag(userId);

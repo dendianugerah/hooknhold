@@ -1,5 +1,4 @@
-import { FolderIcon, TagIcon } from "@/components/icon";
-import { Edit, Edit2, Edit3, XIcon } from "lucide-react";
+import { Edit2, XIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface RenameItemProps {
