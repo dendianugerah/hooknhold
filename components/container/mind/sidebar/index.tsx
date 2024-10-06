@@ -24,11 +24,11 @@ import {
   useRenameFolder,
   useDeleteTag,
 } from "@/hooks";
-import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/DeleteConfirmationDialogg";
+import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/DeleteConfirmationDialog";
 import Link from "next/link";
 import useUserId from "@/hooks/useUserId";
-import CreateFolder from "./CreateFolderr";
-import MenuItem from "./MenuItemm";
+import CreateFolder from "./CreateFolder";
+import MenuItem from "./MenuItem";
 
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   return (
