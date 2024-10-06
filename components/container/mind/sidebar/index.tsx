@@ -30,6 +30,7 @@ import Link from "next/link";
 import useUserId from "@/hooks/useUserId";
 import CreateFolder from "./CreateFolder";
 import MenuItem from "./MenuItem";
+import { AccordionContext } from "@/app/(dashboard)/layout";
 
 interface Folder {
   id: string;
@@ -105,6 +106,7 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
   const { setSearch } = useContext(SearchContext);
   const { folders } = useFolders(userId);
   const { options: tags } = useTags(userId);
+  const { openItems, setOpenItems } = useContext(AccordionContext);
 
   const handleDeleteFolderClick = useCallback((folderId: string) => {
     setSelectedFolderId(folderId);
@@ -140,6 +142,10 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
     }
   }, []);
 
+  const handleAccordionChange = (type: string) => {
+    setOpenItems((prev) => ({ ...prev, [type]: !prev[type] }));
+  };
+
   const renderAccordion = (type: "folder" | "tag") => {
     const items =
       type === "folder"
@@ -160,7 +166,13 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
     const setEditingItem = type === "folder" ? setEditFolderId : setEditTagId;
 
     return (
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion 
+        type="single" 
+        collapsible 
+        className="w-full"
+        value={openItems[type] ? type : undefined}
+        onValueChange={() => handleAccordionChange(type)}
+      >
         <AccordionItem value={type}>
           <AccordionTrigger
             className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"

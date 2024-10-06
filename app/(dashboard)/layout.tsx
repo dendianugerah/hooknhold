@@ -15,21 +15,29 @@ export const SearchContext = createContext({
   setSearch: (search: string) => {},
 });
 
+export const AccordionContext = createContext({
+  openItems: {} as Record<string, boolean>,
+  setOpenItems: (items: React.SetStateAction<Record<string, boolean>>) => {},
+});
+
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [search, setSearch] = useState("");
-  const debounceSearch = useDebounce(search, 300);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+  const debounceSearch = useDebounce(search, 300);
 
   return (
     <QueryClientProvider client={queryClient}>
       <SearchContext.Provider value={{ search: debounceSearch, setSearch }}>
-        <div className="flex flex-col min-h-screen">
-          <HeaderSection
-            isSidebarOpen={isSidebarOpen}
-            setIsSidebarOpen={setIsSidebarOpen}
-          />
-          <div>{children}</div>
-        </div>
+        <AccordionContext.Provider value={{ openItems, setOpenItems }}>
+          <div className="flex flex-col min-h-screen">
+            <HeaderSection
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+            />
+            <div>{children}</div>
+          </div>
+        </AccordionContext.Provider>
       </SearchContext.Provider>
     </QueryClientProvider>
   );

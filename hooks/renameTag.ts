@@ -14,6 +14,7 @@ export const useRenameTag = (userId: string, onSuccessCallback = () => {}) => {
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.tags(userId));
       queryClient.invalidateQueries(queryKeys.bookmarks(userId));
+      queryClient.invalidateQueries(["tagNotInBookmark", userId]);
       onSuccessCallback();
     },
   });
