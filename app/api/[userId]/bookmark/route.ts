@@ -71,7 +71,7 @@ export async function POST(
   const tags = Array.isArray(rawTags) ? rawTags : rawTags ? [rawTags] : [];
 
   try {
-    const tmpDir = `./tmp/`;
+    const tmpDir = `/tmp/`;
     const path = `${Math.random()}.webp`;
 
     const executablePath = await chromium.executablePath();
