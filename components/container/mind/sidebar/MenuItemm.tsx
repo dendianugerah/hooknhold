@@ -7,7 +7,7 @@ import {
   DropdownMenuRadioItem,
 } from "@/components/ui";
 import { Hash } from "lucide-react";
-import RenameItem from "./RenameItem";
+import RenameItem from "./RenameItemm";
 import React, { useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { FolderIcon, MoreVerticalIcon } from "@/components/icon";

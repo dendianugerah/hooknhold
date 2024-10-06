@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui";
 import { ChevronRight, X } from "lucide-react";
 import { BookmarkData } from "@/app/utils/definition";
-import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/DeleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@/components/container/mind/dialog/DeleteConfirmationDialogg";
 
 interface BookmarkListViewProps {
   bookmark: BookmarkData;
