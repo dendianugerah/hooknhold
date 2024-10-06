@@ -303,3 +303,28 @@ export async function deleteTag(userId: string, id: string) {
     throw error;
   }
 }
+
+export async function updateBookmarkFolder(
+  userId: string,
+  bookmarkId: string,
+  folderId: string
+): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${userId}/bookmark/${bookmarkId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ folder_id: folderId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update bookmark folder");
+    }
+
+    await response.json();
+  } catch (error) {
+    console.error("Error updating bookmark folder:", error);
+    throw error;
+  }
+}
