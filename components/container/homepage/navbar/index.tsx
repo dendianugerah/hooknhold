@@ -15,24 +15,6 @@ export default function NavbarSection() {
         >
           Features
         </Link>
-        {/* <Link
-          className="text-sm font-medium rounded-lg hover:bg-gray-100 px-3 py-2"
-          href="#"
-        >
-          Pricing
-        </Link> */}
-        <Link
-          className="text-sm font-medium rounded-lg hover:bg-gray-100 px-3 py-2"
-          href="about"
-        >
-          About
-        </Link>
-        <Link
-          className="text-sm font-medium rounded-lg hover:bg-gray-100 px-3 py-2"
-          href="/product-updates"
-        >
-          Product Updates
-        </Link>
         <Link
           className="text-sm font-medium ml-6 rounded-lg hover:bg-gray-100 px-3 py-2"
           href="/sign-in"

@@ -59,7 +59,7 @@ export default function BookmarkRecommendation({
             Recommended Websites
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-500">
-            Based on your bookmarks and browsing history
+            Based on your bookmarks history
           </DialogDescription>
         </DialogHeader>
         <div className="py-3 sm:py-4">
@@ -142,7 +142,7 @@ export default function BookmarkRecommendation({
           <Button
             variant="outline"
             size="sm"
-            className="w-full sm:w-auto text-xs px-3 py-1"
+            className="w-full sm:w-auto px-3 py-1"
             onClick={() => setIsOpen(false)}
           >
             <XIcon className="w-3 h-3 mr-1" />
@@ -151,7 +151,7 @@ export default function BookmarkRecommendation({
           <Button
             variant="custom_primary"
             size="sm"
-            className="w-full sm:w-auto text-xs px-3 py-1"
+            className="w-full sm:w-auto px-3 py-1"
             onClick={() => generateRecommendations()}
             disabled={isGeneratingRecommendations}
           >
