@@ -1,5 +1,7 @@
 import fs from "fs";
 import puppeteer from "puppeteer";
+import puppeteerCore from "puppeteer-core";
+import chromium from '@sparticuz/chromium';
 import { v4 as uuid } from "uuid";
 import { desc, eq, sql } from "drizzle-orm";
 import { Upload } from "@aws-sdk/lib-storage";
@@ -73,34 +75,45 @@ export async function POST(
     const tmpDir = `./tmp/`;
     const path = `${Math.random()}.webp`;
 
-    const browser = await puppeteer.launch();
+    let browser;
+
+    if (process.env.NODE_ENV === 'production') {
+      const executablePath = await chromium.executablePath()
+      browser = await puppeteerCore.launch({
+        executablePath,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        headless: chromium.headless,
+      });
+    } else {
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+    }
+
     const page = await browser.newPage();
 
     await page.setViewport({ width: 1200, height: 600 });
-    await page.goto(url as string);
+    await page.goto(url as string, { waitUntil: 'networkidle0' });
+
     const [screenshot, title, description] = await Promise.all([
       page.screenshot({
         type: "webp",
         captureBeyondViewport: true,
-        path: tmpDir + path,
       }),
-      page.evaluate(() => {
-        const title = document.querySelector("title")?.textContent;
-        return title;
-      }),
+      page.evaluate(() => document.querySelector("title")?.textContent || ''),
       page.evaluate(() => {
         const description = document.querySelector("meta[name='description']");
-        let content = description?.getAttribute("content");
-
-        if (content && content.length > 255) {
-          content = content.substring(0, 255);
-        }
-
-        return content;
+        let content = description?.getAttribute("content") || '';
+        return content.length > 255 ? content.substring(0, 255) : content;
       }),
     ]);
 
     await browser.close();
+
+    fs.writeFileSync(tmpDir + path, screenshot as Buffer);
+
     await uploadScreenshot(screenshot as Buffer, userId, path);
 
     const bookmarkId = uuid();
