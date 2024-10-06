@@ -36,13 +36,13 @@ async function uploadScreenshot(
 }
 
 async function handleTags(tags: string[], userId: string, bookmarkId: string) {
-  for (const tagName of tags) {
-    let existingTag = await db.execute(
+  const tagPromises = tags.map(async (tagName) => {
+    let [existingTag] = await db.execute(
       sql`SELECT * FROM tag WHERE lower(name) = lower(${tagName}) AND user_id = ${userId}`
     );
     let tagId: string;
 
-    if (existingTag.length === 0) {
+    if (!existingTag) {
       tagId = uuid();
       await db.insert(tag).values({
         id: tagId,
@@ -50,13 +50,15 @@ async function handleTags(tags: string[], userId: string, bookmarkId: string) {
         name: tagName,
       });
     } else {
-      tagId = existingTag[0].id as string;
+      tagId = existingTag.id as string;
     }
 
-    await db.insert(bookmark_tag).values({
-      bookmark_id: bookmarkId,
-      tag_id: tagId,
-    });
+    return { bookmark_id: bookmarkId, tag_id: tagId };
+  });
+
+  const tagValues = await Promise.all(tagPromises);
+  if (tagValues.length > 0) {
+    await db.insert(bookmark_tag).values(tagValues);
   }
 }
 
@@ -72,7 +74,7 @@ export async function POST(
 
   try {
     const tmpDir = `/tmp/`;
-    const path = `${Math.random()}.webp`;
+    const path = `${Math.random()}.jpg`;
 
     const executablePath = await chromium.executablePath();
     const browser = await puppeteerCore.launch({
@@ -85,44 +87,43 @@ export async function POST(
     const page = await browser.newPage();
 
     await page.setViewport({ width: 1200, height: 600 });
-    await page.goto(url as string);
+    await page.goto(url as string, { waitUntil: 'networkidle0', timeout: 10000 });
+    
     const [screenshot, title, description] = await Promise.all([
       page.screenshot({
-        type: "webp",
-        fullPage: true,
+        type: "jpeg",
+        quality: 80,
+        fullPage: false,
         path: tmpDir + path,
       }),
       page.evaluate(() => document.querySelector("title")?.textContent || ''),
       page.evaluate(() => {
         const description = document.querySelector("meta[name='description']");
         let content = description?.getAttribute("content") || '';
-
-        if (content.length > 255) {
-          content = content.substring(0, 255);
-        }
-
-        return content;
+        return content.substring(0, 255);
       }),
     ]);
 
     await browser.close();
-    await uploadScreenshot(screenshot as Buffer, userId, path);
 
     const bookmarkId = uuid();
-    await db.insert(bookmark).values({
-      id: bookmarkId,
-      user_id: userId,
-      folder_id: folder_id,
-      title: title,
-      description: description,
-      url: url,
-      image: process.env.AWS_IMAGE_URL + `${userId}-${path}`,
-    });
+    const [uploadPromise, insertPromise, tagsPromise] = await Promise.all([
+      uploadScreenshot(screenshot as Buffer, userId, path),
+      db.insert(bookmark).values({
+        id: bookmarkId,
+        user_id: userId,
+        folder_id: folder_id,
+        title: title,
+        description: description,
+        url: url,
+        image: process.env.AWS_IMAGE_URL + `${userId}-${path}`,
+      }),
+      tags.length > 0 ? handleTags(tags, userId, bookmarkId) : Promise.resolve(),
+    ]);
+
+    await Promise.all([uploadPromise, insertPromise, tagsPromise]);
 
     fs.unlinkSync(tmpDir + path);
-    if (tags.length > 0) {
-      await handleTags(tags, userId, bookmarkId);
-    }
 
     return Response(null, 200, "Bookmark created successfully");
   } catch (error) {
