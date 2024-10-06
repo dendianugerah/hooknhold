@@ -1,5 +1,7 @@
-import { Edit2, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { FolderIcon } from "@/components/icon";
+import { Hash } from "lucide-react";
 
 interface RenameItemProps {
   item: { id: string; name: string };
@@ -37,7 +39,6 @@ function RenameItem({ item, onRename, onCancel, type }: RenameItemProps) {
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && newName.trim()) {
         onRename(item.id, newName.trim());
-        onCancel();
       } else if (e.key === "Escape") {
         onCancel();
       }
@@ -45,10 +46,18 @@ function RenameItem({ item, onRename, onCancel, type }: RenameItemProps) {
     [newName, onRename, item.id, onCancel]
   );
 
+  const getIcon = (type: "folder" | "tag") => {
+    return type === "folder" ? (
+      <FolderIcon className="h-4 w-4 flex-shrink-0 mt-0.5" />
+    ) : (
+      <Hash className="h-4 w-4 flex-shrink-0 mt-0.5" />
+    );
+  };
+
   return (
     <div className="group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-black transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50">
       <div className="flex items-center gap-3">
-        <Edit2 className="h-4 w-4" />
+        {getIcon(type)}
         <input
           ref={inputRef}
           type="text"
@@ -62,7 +71,7 @@ function RenameItem({ item, onRename, onCancel, type }: RenameItemProps) {
         />
       </div>
       <button onClick={onCancel} onMouseDown={(e) => e.preventDefault()}>
-        <XIcon className="h-4 w-4 text-black font-bold" />
+        <XIcon className="h-4 w-4 text-black font-bold dark:text-gray-400" />
       </button>
     </div>
   );

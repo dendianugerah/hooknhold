@@ -14,6 +14,7 @@ import {
   FolderIcon,
 } from "@/components/icon";
 import { Hash } from "lucide-react";
+import { useDroppable } from "@dnd-kit/core";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useCallback, useContext, useState } from "react";
 import {
@@ -30,6 +31,19 @@ import useUserId from "@/hooks/useUserId";
 import CreateFolder from "./CreateFolder";
 import MenuItem from "./MenuItem";
 
+interface Folder {
+  id: string;
+  name: string;
+}
+
+interface FolderItemProps {
+  folder: Folder;
+  handleDeleteClick: (id: string) => void;
+  handleRenameClick: (id: string) => void;
+  editingItem: string | null;
+  onRename: (id: string, newName: string) => void;
+}
+
 function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
   return (
     <div className="w-full flex-1 mb-4 relative">
@@ -39,6 +53,37 @@ function SearchBar({ setSearch }: { setSearch: (value: string) => void }) {
         placeholder="What are you looking for?"
         type="search"
         onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
+  );
+}
+
+function FolderItem({
+  folder,
+  handleDeleteClick,
+  handleRenameClick,
+  editingItem,
+  onRename,
+}: FolderItemProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: folder.id,
+    data: { type: "folder", folder },
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`transition-colors duration-200 ${
+        isOver ? "bg-blue-100 dark:bg-blue-800" : ""
+      }`}
+    >
+      <MenuItem
+        item={folder}
+        handleDeleteClick={handleDeleteClick}
+        handleRenameClick={handleRenameClick}
+        editingItem={editingItem}
+        onRename={onRename}
+        type="folder"
       />
     </div>
   );
@@ -117,27 +162,38 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
     return (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value={type}>
-          {items.length > 0 && (
-            <AccordionTrigger
-              className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-              id={`${type}Accordion`}
-            >
-              <span className="flex gap-3 items-center">
-                {icon}
-                {title}
-              </span>
-            </AccordionTrigger>
-          )}
+          <AccordionTrigger
+            className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+            id={`${type}Accordion`}
+          >
+            <span className="flex gap-3 items-center">
+              {icon}
+              {title}
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             <div className="overflow-y-auto max-h-96 ml-3">
-              <MenuItem
-                items={items}
-                handleDeleteClick={handleDelete}
-                handleRenameClick={setEditingItem}
-                editingItem={editingItem}
-                onRename={handleRename}
-                type={type}
-              />
+              {type === "folder" ? (
+                (items as Folder[]).map((folder) => (
+                  <FolderItem
+                    key={folder.id}
+                    folder={folder}
+                    handleDeleteClick={handleDelete}
+                    handleRenameClick={setEditingItem}
+                    editingItem={editingItem}
+                    onRename={handleRename}
+                  />
+                ))
+              ) : (
+                <MenuItem
+                  items={items}
+                  handleDeleteClick={handleDelete}
+                  handleRenameClick={setEditingItem}
+                  editingItem={editingItem}
+                  onRename={handleRename}
+                  type={type}
+                />
+              )}
               {type === "folder" && folders.length > 0 && showCreateFolder && (
                 <CreateFolder
                   userId={userId}

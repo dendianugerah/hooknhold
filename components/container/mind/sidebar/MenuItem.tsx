@@ -64,7 +64,8 @@ function ItemDropdownMenu({
 }
 
 interface MenuItemProps {
-  items: { id: string; name: string }[];
+  item?: { id: string; name: string };
+  items?: { id: string; name: string }[];
   handleDeleteClick: (id: string) => void;
   handleRenameClick: (id: string) => void;
   editingItem: string | null;
@@ -73,6 +74,7 @@ interface MenuItemProps {
 }
 
 function MenuItem({
+  item,
   items,
   handleDeleteClick,
   handleRenameClick,
@@ -95,7 +97,7 @@ function MenuItem({
 
   return (
     <>
-      {items.map((item) => (
+      {item ? (
         <div key={item.id}>
           {editingItem === item.id ? (
             <RenameItem
@@ -131,7 +133,45 @@ function MenuItem({
             </Link>
           )}
         </div>
-      ))}
+      ) : (
+        items?.map((item) => (
+          <div key={item.id}>
+            {editingItem === item.id ? (
+              <RenameItem
+                item={item}
+                onRename={onRename}
+                onCancel={handleCancel}
+                type={type}
+              />
+            ) : (
+              <Link
+                className={`group flex justify-between items-center gap-3 w-full rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50`}
+                href={`/mind/${item.id}`}
+              >
+                <div className="flex items-start gap-3 flex-grow min-w-0">
+                  {getIcon(type)}
+                  <span
+                    className={`break-words ${
+                      pathname === `/mind/${item.id}`
+                        ? "text-[#579DFF] dark:!text-[#579DFF]"
+                        : ""
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                </div>
+                <span className="ml-2 flex-shrink-0 translate-x-0 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+                  <ItemDropdownMenu
+                    itemId={item.id}
+                    handleDeleteClick={handleDeleteClick}
+                    handleRenameClick={handleRenameClick}
+                  />
+                </span>
+              </Link>
+            )}
+          </div>
+        ))
+      )}
     </>
   );
 }
