@@ -120,7 +120,6 @@ export async function PATCH(
     const { userId, id: bookmarkId } = params;
     const { folder_id: folderId } = await req.json();
 
-    console.log(`Updating bookmark folder: userId=${userId}, bookmarkId=${bookmarkId}, folderId=${folderId}`);
 
     await db
       .update(bookmark)
@@ -130,7 +129,6 @@ export async function PATCH(
     console.log("Bookmark folder updated successfully");
     return Response(null, 200, "Bookmark folder updated successfully");
   } catch (error) {
-    console.error("Error updating bookmark folder:", error);
     return Response(null, 500, "Failed to update bookmark folder");
   }
 }

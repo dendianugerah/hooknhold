@@ -65,7 +65,8 @@ function FolderItem({
   handleRenameClick,
   editingItem,
   onRename,
-}: FolderItemProps) {
+  className,
+}: FolderItemProps & { className?: string }) {
   const { setNodeRef, isOver } = useDroppable({
     id: folder.id,
     data: { type: "folder", folder },
@@ -74,9 +75,9 @@ function FolderItem({
   return (
     <div
       ref={setNodeRef}
-      className={`transition-colors duration-200 ${
-        isOver ? "bg-blue-100 dark:bg-blue-800" : ""
-      }`}
+      className={`transition-colors rounded-md duration-200 ${className} ${
+        isOver ? "bg-blue-200 dark:bg-blue-700 border-2 border-blue-500 shadow-lg" : ""
+      } cursor-pointer`}
     >
       <MenuItem
         item={folder}
@@ -194,6 +195,7 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
                     handleRenameClick={setEditingItem}
                     editingItem={editingItem}
                     onRename={handleRename}
+                    className="transition-opacity duration-200 hover:opacity-80"
                   />
                 ))
               ) : (
@@ -222,7 +224,7 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
 
   return (
     <div
-      className={`fixed h-full w-[270px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40 top-0 bg-white z-50 transition-transform duration-300 ${
+      className={`fixed h-full w-[270px] xl:w-[350px] border-r lg:block dark:bg-gray-800/40 top-0 bg-white z-50 transition-transform duration-300 ease-in-out ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0`}
     >
