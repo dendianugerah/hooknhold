@@ -12,6 +12,9 @@ import { BookmarkData } from "@/app/utils/definition";
 import { NextRequest, NextResponse } from "next/server";
 import db, { bookmark, bookmark_tag, tag } from "@/lib/database";
 
+import { Browser, Page } from 'puppeteer';
+import { Browser as CoreBrowser, Page as CorePage } from 'puppeteer-core';
+
 async function uploadScreenshot(
   data: Buffer,
   userId: string,
@@ -77,42 +80,43 @@ export async function POST(
     const tmpDir = `/tmp/`;
     const path = `${Math.random()}.jpg`;
 
-    let browser;
+    let browser: Browser | CoreBrowser;
+    let page: Page | CorePage;
 
     if (process.env.NODE_ENV === 'production') {
-      const executablePath = await chromium.executablePath()
+      const executablePath = await chromium.executablePath();
       browser = await puppeteerCore.launch({
         executablePath,
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         headless: chromium.headless,
-      });
+      }) as CoreBrowser;
     } else {
       browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
-      });
+      }) as Browser;
     }
 
-    const page = await browser.newPage();
+    page = await browser.newPage();
+    const typedPage = page as Page;
 
-    await page.setViewport({ width: 1200, height: 600 });
-    await page.goto(url as string, { waitUntil: 'networkidle0', timeout: 10000 });
+    await typedPage.setViewport({ width: 1200, height: 600 });
+    await typedPage.goto(url as string, { waitUntil: 'networkidle0', timeout: 10000 });
     
-    const [screenshot, title, description] = await Promise.all([
-      page.screenshot({
-        type: "jpeg",
-        quality: 80,
-        fullPage: false,
-        path: tmpDir + path,
-      }),
-      page.evaluate(() => document.querySelector("title")?.textContent || ''),
-      page.evaluate(() => {
-        const description = document.querySelector("meta[name='description']");
-        let content = description?.getAttribute("content") || '';
-        return content.substring(0, 255);
-      }),
-    ]);
+    const screenshot = await typedPage.screenshot({
+      type: "jpeg",
+      quality: 80,
+      fullPage: false,
+      path: tmpDir + path,
+    });
+
+    const title = await typedPage.evaluate(() => document.querySelector("title")?.textContent || '');
+    const description = await typedPage.evaluate(() => {
+      const descriptionMeta = document.querySelector<HTMLElement>("meta[name='description']");
+      let content = descriptionMeta?.getAttribute("content") || '';
+      return content.substring(0, 255);
+    });
 
     await browser.close();
 
