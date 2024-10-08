@@ -1,5 +1,6 @@
 import fs from "fs";
-import puppeteerCore from 'puppeteer-core';
+import puppeteer from "puppeteer";
+import puppeteerCore from "puppeteer-core";
 import chromium from '@sparticuz/chromium';
 import { v4 as uuid } from "uuid";
 import { desc, eq, sql } from "drizzle-orm";
@@ -76,13 +77,22 @@ export async function POST(
     const tmpDir = `/tmp/`;
     const path = `${Math.random()}.jpg`;
 
-    const executablePath = await chromium.executablePath();
-    const browser = await puppeteerCore.launch({
-      executablePath,
-      args: chromium.args,
-      headless: chromium.headless,
-      defaultViewport: chromium.defaultViewport
-    });
+    let browser;
+
+    if (process.env.NODE_ENV === 'production') {
+      const executablePath = await chromium.executablePath()
+      browser = await puppeteerCore.launch({
+        executablePath,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        headless: chromium.headless,
+      });
+    } else {
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+    }
 
     const page = await browser.newPage();
 
