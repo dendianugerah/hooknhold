@@ -2,6 +2,8 @@
 
 HooknHold is an open-source project built with [Next.js](https://nextjs.org/) that empowers users to efficiently bookmark, organize, and manage their favorite web content.
 
+![HooknHold Preview](./public/image/hooknhold-preview.png)
+
 ## Features
 
 - **Smart Bookmarking**: Easily save and categorize web pages with automatic metadata extraction.
