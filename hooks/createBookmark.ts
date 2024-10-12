@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { addBookmark } from "@/app/utils/action";
-import { queryKeys } from "@/utils/queryKeys";
+import { queryKeys } from "@/app/utils/queryKeys";
 
 export const useCreateBookmark = (
   userId: string,

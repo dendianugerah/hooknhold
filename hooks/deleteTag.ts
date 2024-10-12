@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { deleteTag } from "@/app/utils/action";
-import { queryKeys } from '@/utils/queryKeys';
+import { queryKeys } from "@/app/utils/queryKeys";
 
 export const useDeleteTag = (userId: string) => {
   const queryClient = useQueryClient();

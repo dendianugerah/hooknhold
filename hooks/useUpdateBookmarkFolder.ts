@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { updateBookmarkFolder } from "@/app/utils/action";
-import { queryKeys } from '@/utils/queryKeys';
+import { queryKeys } from "@/app/utils/queryKeys";
 
 export const useUpdateBookmarkFolder = (userId: string) => {
   const queryClient = useQueryClient();

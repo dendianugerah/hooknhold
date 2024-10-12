@@ -1,5 +1,5 @@
 import { deleteTagInBookmark } from "@/app/utils/action";
-import { queryKeys } from "@/utils/queryKeys";
+import { queryKeys } from "@/app/utils/queryKeys";
 import { useMutation, useQueryClient } from "react-query";
 
 export const useDeleteTagInBookmark = (userId: string, bookmarkId: string) => {
