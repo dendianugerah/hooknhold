@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HooknHold
+
+HooknHold is an open-source project built with [Next.js](https://nextjs.org/) that empowers users to efficiently bookmark, organize, and manage their favorite web content.
+
+## Features
+
+- **Smart Bookmarking**: Easily save and categorize web pages with automatic metadata extraction.
+- **Intuitive Organization**: Create custom folders and tags for effortless content management.
+- **Drag-and-Drop Interface**: Seamlessly reorganize bookmarks and folders with a user-friendly drag-and-drop system.
+- **Full Search**: Quickly find your bookmarks.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js
+- pnpm, npm, or yarn
+- PostgreSQL database
+- AWS S3 bucket (optional, for cloud storage)
+- GitHub account (for OAuth)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dendianugerah/hooknhold.git
+   cd hooknhold
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+2. Install dependencies:
+   ```bash
+   pnpm install
+   # or
+   npm install
+   # or
+   yarn install
+   ```
 
-## Learn More
+3. Set up environment variables:
+   Copy the `.env.example` file to `.env` and fill in the required values.
 
-To learn more about Next.js, take a look at the following resources:
+4. Run database migrations:
+   ```bash
+   pnpm run migrate
+   # or
+   npm run migrate
+   # or
+   yarn migrate
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Start the development server:
+   ```bash
+   pnpm run dev
+   # or
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+6. Open [http://localhost:3002](http://localhost:3002) with your browser to see the result.
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Sign in with your GitHub account.
+2. Add bookmarks by pasting URLs or using the "Add Bookmark" button.
+3. Organize your bookmarks into folders and add tags for easy categorization.
+4. Use the search function to quickly find specific bookmarks.
+5. Drag and drop bookmarks to rearrange or move them between folders.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework for server-side rendering and static site generation
+- [NextAuth.js](https://next-auth.js.org/) - Authentication for Next.js applications
+- [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM for SQL databases
+- [PostgreSQL](https://www.postgresql.org/) - Open-source relational database
+- [AWS S3](https://aws.amazon.com/s3/) - Cloud object storage (mandatory for now)
+- [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+
+## Upcoming Features
+
+- [ ] Hybrid storage system: Option to store bookmarks in local directory or AWS S3
+- [ ] Browser extension for quick bookmarking
+- [ ] Sharing bookmarks with other users
+- [ ] AI-powered website recommendations based on bookmark history
+- [ ] Code refactoring for improved performance and maintainability
+- [ ] Comprehensive API documentation
+- [ ] Integration tests for core functionalities
