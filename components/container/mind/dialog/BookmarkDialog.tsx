@@ -27,7 +27,7 @@ const BookmarkDialog: React.FC<BookmarkDialogProps> = ({ userId, onClose }) => {
   const [selectedFolderId, setSelectedFolderId] = useState("");
   const [selectedFolderName, setSelectedFolderName] = useState("Select");
 
-  const { options } = useTags(userId);
+  const { options, invalidateTags } = useTags(userId);
   const { folders } = useFolders(userId);
   const createBookmark = useCreateBookmark(userId, onClose);
 
@@ -51,6 +51,7 @@ const BookmarkDialog: React.FC<BookmarkDialogProps> = ({ userId, onClose }) => {
         setSelectedTags([]);
         setSelectedFolderId("");
         setSelectedFolderName("Select");
+        invalidateTags();
         setError("");
         onClose();
       },

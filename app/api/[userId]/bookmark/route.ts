@@ -124,21 +124,22 @@ export async function POST(
     await browser.close();
 
     const bookmarkId = uuid();
-    const [uploadPromise, insertPromise, tagsPromise] = await Promise.all([
+    await db.insert(bookmark).values({
+      id: bookmarkId,
+      user_id: userId,
+      folder_id: folder_id,
+      title: title,
+      description: description,
+      url: url,
+      image: process.env.AWS_IMAGE_URL + `${userId}-${path}`,
+    });
+
+    const [uploadPromise, tagsPromise] = await Promise.all([
       uploadScreenshot(screenshot as Buffer, userId, path),
-      db.insert(bookmark).values({
-        id: bookmarkId,
-        user_id: userId,
-        folder_id: folder_id,
-        title: title,
-        description: description,
-        url: url,
-        image: process.env.AWS_IMAGE_URL + `${userId}-${path}`,
-      }),
       tags.length > 0 ? handleTags(tags, userId, bookmarkId) : Promise.resolve(),
     ]);
 
-    await Promise.all([uploadPromise, insertPromise, tagsPromise]);
+    await Promise.all([uploadPromise, tagsPromise]);
 
     fs.unlinkSync(tmpDir + path);
 
