@@ -15,6 +15,9 @@ import db, { bookmark, bookmark_tag, tag } from "@/lib/database";
 import { Browser, Page } from 'puppeteer';
 import { Browser as CoreBrowser, Page as CorePage } from 'puppeteer-core';
 
+export const maxDuration = 20; // 20 seconds
+export const dynamic = 'force-dynamic';
+
 async function uploadScreenshot(
   data: Buffer,
   userId: string,
@@ -102,7 +105,7 @@ export async function POST(
     const typedPage = page as Page;
 
     await typedPage.setViewport({ width: 1200, height: 600 });
-    await typedPage.goto(url as string, { waitUntil: 'networkidle0', timeout: 10000 });
+    await typedPage.goto(url as string, { waitUntil: 'networkidle0' });
     
     const screenshot = await typedPage.screenshot({
       type: "jpeg",
