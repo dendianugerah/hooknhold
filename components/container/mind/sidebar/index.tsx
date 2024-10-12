@@ -175,15 +175,17 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
         onValueChange={() => handleAccordionChange(type)}
       >
         <AccordionItem value={type}>
-          <AccordionTrigger
-            className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-            id={`${type}Accordion`}
-          >
-            <span className="flex gap-3 items-center">
-              {icon}
-              {title}
-            </span>
-          </AccordionTrigger>
+          {items.length > 0 && (
+            <AccordionTrigger
+              className="flex px-3 py-2 text-gray-500 transition-none hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+              id={`${type}Accordion`}
+            >
+              <span className="flex gap-3 items-center">
+                {icon}
+                {title}
+              </span>
+            </AccordionTrigger>
+          )}
           <AccordionContent>
             <div className="overflow-y-auto max-h-96 ml-3">
               {type === "folder" ? (
