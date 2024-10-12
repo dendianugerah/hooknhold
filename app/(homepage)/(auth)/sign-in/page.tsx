@@ -2,8 +2,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui";
-import { Package2Icon } from "@/components/icon";
 import { signIn } from "next-auth/react";
+import { Package2 } from "lucide-react";
 
 export default function SignIn() {
   return (
@@ -14,7 +14,7 @@ export default function SignIn() {
             href="/"
             className="flex items-center hover:text-gray-600 transition-colors duration-200"
           >
-            <Package2Icon className="h-6 w-6 mx-2" />
+            <Package2 className="h-6 w-6 mx-2" />
             <h1 className="text-xl font-extrabold">Hooknhold.</h1>
           </Link>
         </section>
@@ -38,7 +38,7 @@ export default function SignIn() {
                     Sign in with GitHub
                   </Button>
                 </div>
-                <p className="text-sm text-center text-gray-600 mt-6">
+                {/* <p className="text-sm text-center text-gray-600 mt-6">
                   By signing in, you agree to our{" "}
                   <Link href="#" className="text-blue-600 hover:underline">
                     Terms of Service
@@ -48,7 +48,7 @@ export default function SignIn() {
                     Privacy Policy
                   </Link>
                   .
-                </p>
+                </p> */}
               </div>
             </div>
             <div className="flex items-center py-8 px-4 sm:px-6 lg:px-8">

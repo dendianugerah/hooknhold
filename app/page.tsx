@@ -1,15 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  TagIcon,
-  SearchIcon,
-  FolderIcon,
-  FolderSyncIcon,
-} from "@/components/icon";
 import NavbarSection from "@/components/container/homepage/navbar";
 import {
-  LinearGradient,
-  BorderBeam,
   BentoCard,
   BentoGrid,
   Marquee,
@@ -24,6 +16,7 @@ import {
 } from "@/components/ui/command";
 import { FileTextIcon, InputIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { FoldersIcon, FolderSync, SearchIcon, TagsIcon } from "lucide-react";
 
 const files = [
   {
@@ -143,10 +136,6 @@ export default function Home() {
                       quality={100}
                       unoptimized
                     />
-                    <BorderBeam />
-
-                    <LinearGradient from="transparent" to="#1E1E1E" />
-                    <LinearGradient from="transparent" to="#1E1E1E" />
 
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 transition-opacity duration-300"></div>
                   </div>
@@ -192,7 +181,7 @@ export default function Home() {
                 <div className="relative grid gap-4 border-t pt-4">
                   <div className="grid gap-1">
                     <span className="flex items-center gap-2">
-                      <FolderIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <FoldersIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
                       <h3 className="text-xl font-bold text-white">
                         Organize Folders
                       </h3>
@@ -203,7 +192,7 @@ export default function Home() {
                   </div>
                   <div className="grid gap-1">
                     <span className="flex items-center gap-2">
-                      <TagIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <TagsIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
                       <h3 className="text-xl font-bold text-white">Tags</h3>
                     </span>
                     <p className="text-[#DEDEDE] dark:text-gray-400">
@@ -221,7 +210,7 @@ export default function Home() {
                   </div>
                   <div className="grid gap-1">
                     <span className="flex items-center gap-2">
-                      <FolderSyncIcon className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
+                      <FolderSync className="h-10 w-10 rounded-lg p-2 bg-gray-100 dark:bg-gray-800" />
                       <h3 className="text-xl font-bold text-white">
                         Cross-Device Sync
                       </h3>
@@ -234,64 +223,9 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-            <div className="container px-4 md:px-6">
-              <div className="grid max-w-5xl mx-auto items-center gap-6 lg:grid-cols-[2fr_1fr] lg:gap-12">
-                <div className="space-y-4 align-top">
-                  <div className="inline-block rounded-lg bg-[#131313] px-3 py-1 text-sm dark:bg-gray-800 text-white">
-                    Testimonials
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl xl:text-5xl">
-                    Loved by users
-                  </h2>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    But don&apos;t just take our word for it. Here&apos;s what
-                    our users have to say about Hooknhold.
-                  </p>
-                </div>
-                <div className="grid gap-6">
-                  <div className="grid gap-2 bg-white py-8 rounded-3xl px-8">
-                    <div className=" py-1 text-sm dark:bg-gray-800">
-                      @username
-                    </div>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Hooknhold has completely changed the way I save and
-                      organize my links. It&apos;s so intuitive and easy to use.
-                      Highly recommended!
-                    </p>
-                  </div>
-                  <div className="grid gap-2 bg-white py-8 rounded-3xl px-8">
-                    <div className="py-1 text-sm dark:bg-gray-800">
-                      @webfanatic
-                    </div>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      I&apos;ve tried a lot of bookmark managers, but Hooknhold
-                      is the best. I love the clean interface and the ability to
-                      access my bookmarks from any device.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
         </main>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 border-t bg-[#1E1E1E] text-white">
-          <div className="container grid gap-4 px-4 md:px-6 bg-[#262626] max-w-7xl mx-auto rounded-3xl py-8">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold md:text-4xl">
-                Have a Brilliant Idea for a Feature?
-              </h2>
-              <p className="max-w-[600px] text-[#DEDEDE] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Your input fuels our innovation. Share your feature request or
-                suggestion with us, and let&apos;s shape the future together.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <footer className="gap-2 py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-white">
+        <footer className="gap-2 py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-white mt-8">
           <span className="max-w-7xl mx-auto flex flex-row">
             <p className="text-xs text-gray-500 dark:text-gray-400 ">
               © 2024 Hooknhold. All rights reserved.

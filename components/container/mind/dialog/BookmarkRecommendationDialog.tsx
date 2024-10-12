@@ -8,8 +8,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui";
-import { LoadingCircleIcon } from "@/components/icon";
-import { CheckIcon, PlusIcon, SparklesIcon, XIcon } from "lucide-react";
+import { CheckIcon, LoaderCircle, PlusIcon, SparklesIcon, XIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -56,7 +55,7 @@ export default function BookmarkRecommendation({
       <DialogContent className="p-5 sm:p-6 max-w-xl w-full">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-xl sm:text-2xl font-semibold">
-            Recommended Websites
+            Recommended Websites (Todo)
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-500">
             Based on your bookmarks history
@@ -65,7 +64,7 @@ export default function BookmarkRecommendation({
         <div className="py-3 sm:py-4">
           {isGeneratingRecommendations ? (
             <div className="flex flex-col items-center justify-center py-10 space-y-2">
-              <LoadingCircleIcon className="w-10 h-10 animate-spin text-primary" />
+              <LoaderCircle className="w-10 h-10 animate-spin text-primary" />
               <p className="text-sm text-gray-500">
                 Generating recommendations...
               </p>

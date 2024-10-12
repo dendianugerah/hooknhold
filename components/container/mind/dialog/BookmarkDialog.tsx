@@ -12,8 +12,8 @@ import {
   CardContent,
 } from "@/components/ui";
 import { Option } from "@/components/ui/multiple-selector";
-import { LoadingCircleIcon } from "@/components/icon";
 import { useCreateBookmark, useTags, useFolders } from "@/hooks";
+import { LoaderCircle } from "lucide-react";
 
 interface BookmarkDialogProps {
   userId: string;
@@ -147,7 +147,7 @@ const BookmarkDialog: React.FC<BookmarkDialogProps> = ({ userId, onClose }) => {
           {createBookmark.isLoading ? (
             <>
               Saving
-              <LoadingCircleIcon className="w-4 h-4 ml-2 animate-spin" />
+              <LoaderCircle className="w-4 h-4 ml-2 animate-spin" />
             </>
           ) : (
             "Save changes"

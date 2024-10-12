@@ -1,6 +1,5 @@
-import { X } from "lucide-react";
+import { FolderIcon, X } from "lucide-react";
 import { useState, useCallback } from "react";
-import { FolderIcon } from "@/components/icon";
 import useCreateFolder from "@/hooks/createFolder";
 
 interface FolderProps {

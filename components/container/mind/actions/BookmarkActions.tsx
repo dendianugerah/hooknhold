@@ -1,7 +1,6 @@
 import BookmarkDialog from "../dialog/BookmarkDialog";
 import { Button, Dialog, DialogTrigger, DialogContent } from "@/components/ui";
-import { PlusIcon, ShareIcon } from "@/components/icon";
-import { SparklesIcon } from "lucide-react";
+import { PlusIcon, Share2Icon, SparklesIcon } from "lucide-react";
 
 interface BookmarkActionsProps {
   isOpen: boolean;
@@ -45,7 +44,7 @@ export default function BookmarkActions({
       </Dialog>
       {!isMindRoute && (
         <Button className="p-2 md:px-4" variant="outline" disabled>
-          <ShareIcon className="w-4 h-4 md:mr-2" />
+          <Share2Icon className="w-4 h-4 md:mr-2" />
           <span className="hidden md:inline">Share</span>
         </Button>
       )}

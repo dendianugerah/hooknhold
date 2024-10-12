@@ -1,6 +1,5 @@
-import { XIcon } from "lucide-react";
+import { FolderIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FolderIcon } from "@/components/icon";
 import { Hash } from "lucide-react";
 
 interface RenameItemProps {

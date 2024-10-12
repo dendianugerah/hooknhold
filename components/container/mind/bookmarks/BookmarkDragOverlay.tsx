@@ -1,5 +1,5 @@
+import { BookmarkIcon } from "lucide-react";
 import React from "react";
-import { BookmarkIcon } from "@/components/icon";
 
 interface BookmarkDragOverlayProps {
   title: string;

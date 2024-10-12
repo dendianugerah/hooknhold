@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { BookmarkIcon } from "@/components/icon";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import {
   Button,
@@ -13,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui";
+import { BookmarkIcon } from "lucide-react";
 
 interface HeaderSectionProps {
   isSidebarOpen: boolean;

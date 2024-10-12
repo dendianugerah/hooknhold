@@ -6,11 +6,10 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui";
-import { Hash } from "lucide-react";
+import { FolderIcon, Hash, MoreVertical } from "lucide-react";
 import RenameItem from "./RenameItem";
 import React, { useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { FolderIcon, MoreVerticalIcon } from "@/components/icon";
 
 interface ItemDropdownMenuProps {
   itemId: string;
@@ -27,7 +26,7 @@ function ItemDropdownMenu({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center justify-center">
-          <MoreVerticalIcon className="h-4 w-4 text-black font-bold" />
+          <MoreVertical className="h-4 w-4 text-black font-bold" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
