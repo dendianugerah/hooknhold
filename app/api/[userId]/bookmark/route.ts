@@ -179,7 +179,7 @@ export async function GET(
   if (folderId) {
     bookmarks = withFolderId(bookmarks, folderId);
   } else {
-    bookmarks = bookmarks.where(sql`folder_id IS NULL`);
+    bookmarks = bookmarks.where(sql`folder_id IS NULL AND bookmark.user_id = ${userId}`);
   }
 
   if (searchQuery) {
