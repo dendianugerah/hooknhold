@@ -59,16 +59,7 @@ HooknHold is an open-source project built with [Next.js](https://nextjs.org/) th
    yarn dev
    ```
 
-6. Run migration:
-   ```bash
-   pnpm run migrate
-   # or
-   npm run migrate
-   # or
-   yarn migrate
-   ```
-
-7. Open [http://localhost:3002](http://localhost:3002) with your browser to see the result.
+6. Open [http://localhost:3002](http://localhost:3002) with your browser to see the result.
 
 ## Usage
 
