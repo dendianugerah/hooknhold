@@ -81,10 +81,10 @@ HooknHold is an open-source project built with [Next.js](https://nextjs.org/) th
 
 ## Upcoming Features
 
-- [ ] Hybrid storage system: Option to store bookmarks in local directory or AWS S3
+- [V] Hybrid storage system: Option to store bookmarks in local directory or AWS S3 (Still need to test)
+- [ ] Code refactoring for improved performance and maintainability
 - [ ] Browser extension for quick bookmarking
 - [ ] Sharing bookmarks with other users
 - [ ] AI-powered website recommendations based on bookmark history
-- [ ] Code refactoring for improved performance and maintainability
 - [ ] Comprehensive API documentation
 - [ ] Integration tests for core functionalities
