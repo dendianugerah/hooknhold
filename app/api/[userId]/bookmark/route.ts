@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import puppeteer from "puppeteer";
 import puppeteerCore from "puppeteer-core";
 import chromium from '@sparticuz/chromium';
@@ -21,25 +22,38 @@ export const dynamic = 'force-dynamic';
 async function uploadScreenshot(
   data: Buffer,
   userId: string,
-  path: string
-): Promise<void> {
-  const uploadInstance = new Upload({
-    client: new S3Client({
-      region: process.env.AWS_REGION,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-      },
-    }),
-    params: {
-      Bucket: process.env.AWS_BUCKET_NAME!,
-      Key: `${userId}-${path}`,
-      Body: data,
-      ACL: "public-read",
-    },
-  });
+  filename: string
+): Promise<string> {
+  const storageType = process.env.STORAGE_TYPE || "s3";
 
-  await uploadInstance.done();
+  if (storageType === "local") {
+    const localPath = path.join(process.env.LOCAL_STORAGE_PATH!, userId);
+    if (!fs.existsSync(localPath)) {
+      fs.mkdirSync(localPath, { recursive: true });
+    }
+    const filePath = path.join(localPath, filename);
+    fs.writeFileSync(filePath, data);
+    return `file://${filePath}`;
+  } else {
+    const uploadInstance = new Upload({
+      client: new S3Client({
+        region: process.env.AWS_REGION,
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+        },
+      }),
+      params: {
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: `${userId}-${filename}`,
+        Body: data,
+        ACL: "public-read",
+      },
+    });
+
+    await uploadInstance.done();
+    return `${process.env.AWS_IMAGE_URL}${userId}-${filename}`;
+  }
 }
 
 async function handleTags(tags: string[], userId: string, bookmarkId: string) {
@@ -81,7 +95,7 @@ export async function POST(
 
   try {
     const tmpDir = `/tmp/`;
-    const path = `${Math.random()}.jpg`;
+    const filename = `${Math.random()}.jpg`;
 
     let browser: Browser | CoreBrowser;
     let page: Page | CorePage;
@@ -111,7 +125,7 @@ export async function POST(
       type: "jpeg",
       quality: 80,
       fullPage: false,
-      path: tmpDir + path,
+      path: tmpDir + filename,
     });
 
     const title = await typedPage.evaluate(() => document.querySelector("title")?.textContent || '');
@@ -124,6 +138,8 @@ export async function POST(
     await browser.close();
 
     const bookmarkId = uuid();
+    const imageUrl = await uploadScreenshot(screenshot as Buffer, userId, filename);
+
     await db.insert(bookmark).values({
       id: bookmarkId,
       user_id: userId,
@@ -131,17 +147,14 @@ export async function POST(
       title: title,
       description: description,
       url: url,
-      image: process.env.AWS_IMAGE_URL + `${userId}-${path}`,
+      image: imageUrl,
     });
 
-    const [uploadPromise, tagsPromise] = await Promise.all([
-      uploadScreenshot(screenshot as Buffer, userId, path),
-      tags.length > 0 ? handleTags(tags, userId, bookmarkId) : Promise.resolve(),
-    ]);
+    if (tags.length > 0) {
+      await handleTags(tags, userId, bookmarkId);
+    }
 
-    await Promise.all([uploadPromise, tagsPromise]);
-
-    fs.unlinkSync(tmpDir + path);
+    fs.unlinkSync(tmpDir + filename);
 
     return Response(null, 200, "Bookmark created successfully");
   } catch (error) {
