@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui";
-import { BookmarkIcon, FolderIcon, Hash, Package2, PlusIcon, SearchIcon } from "lucide-react";
+import { BookmarkIcon, Circle, FolderIcon, Hash, Package2, PlusIcon, SearchIcon } from "lucide-react";
 import { useDroppable } from "@dnd-kit/core";
 import { SearchContext } from "@/app/(dashboard)/layout";
 import { useCallback, useContext, useState } from "react";
@@ -226,8 +226,12 @@ export default function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-14 items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="#">
-            <Package2 className="h-6 w-6" />
-            <span>Hooknhold</span>
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center shadow-sm ring-1 ring-black/[0.03]">
+              <Circle className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-base font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-blue-500">
+              Hooknhold
+            </span>
           </Link>
         </div>
         <div className="flex-1 py-2">

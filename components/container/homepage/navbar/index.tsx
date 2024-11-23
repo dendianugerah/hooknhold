@@ -1,11 +1,13 @@
-import { Package2 } from "lucide-react";
+import { Circle } from "lucide-react";
 import Link from "next/link";
 
 export default function NavbarSection() {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center max-w-7xl mx-auto">
       <Link className="flex items-center justify-center" href="/">
-        <Package2 className="h-6 w-6" />
+        <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center shadow-sm ring-1 ring-black/[0.03]">
+          <Circle className="h-4 w-4 text-white" />
+        </div>
         <span className="sr-only">Hooknhold</span>
       </Link>
       <nav className="ml-auto flex items-center">
